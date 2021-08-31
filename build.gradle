@@ -1,0 +1,29 @@
+plugins {
+    id 'application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+}
+
+application {
+    mainClass = 'algorithm.visualiser.main.Launcher'
+}
+
+jar {
+    manifest {
+        attributes(
+            'Main-Class': 'algorithm.visualiser.main.Launcher'
+        )
+    }
+}
+
+java {
+  toolchain {
+    languageVersion.set(JavaLanguageVersion.of(11))
+  }
+}
