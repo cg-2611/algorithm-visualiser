@@ -1,5 +1,10 @@
 package algorithm.visualiser.main;
 
+import java.awt.Graphics;
+import java.awt.image.BufferStrategy;
+
+import algorithm.visualiser.entities.Bar;
+import algorithm.visualiser.gui.RenderCanvas;
 import algorithm.visualiser.gui.Window;
 
 public class Visualiser implements Runnable {
@@ -9,9 +14,13 @@ public class Visualiser implements Runnable {
     private int height;
 
     private Window window;
+    private RenderCanvas renderCanvas;
 
     private Boolean running;
     private Thread thread;
+
+    private BufferStrategy bs;
+    private Graphics g;
 
     public Visualiser(String title, int width, int height) {
         this.title = title;
@@ -19,6 +28,13 @@ public class Visualiser implements Runnable {
         this.height = height;
 
         this.running = false;
+    }
+
+    public void initialise() {
+        window = new Window(this.title, this.width, this.height);
+        window.setVisible(true);
+
+        renderCanvas = window.getRenderCanvas();
     }
 
     public synchronized void start() {
@@ -46,10 +62,33 @@ public class Visualiser implements Runnable {
         }
     }
 
+    public void render() {
+        bs = renderCanvas.getBufferStrategy();
+
+        if (bs == null) {
+            renderCanvas.createBufferStrategy(3);
+            return;
+        }
+
+        g = bs.getDrawGraphics();
+
+        g.clearRect(0, 0, width, height);
+
+        renderCanvas.renderBars(g);
+
+        bs.show();
+
+        g.dispose();
+    }
+
     @Override
     public void run() {
-        window = new Window(this.title, this.width, this.height);
-        window.setVisible(true);
+        initialise();
+
+        while (running) {
+            // update
+            render();
+        }
 
         stop();
     }
