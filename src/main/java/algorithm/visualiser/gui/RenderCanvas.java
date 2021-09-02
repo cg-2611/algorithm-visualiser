@@ -32,7 +32,7 @@ public class RenderCanvas extends Canvas {
 
     public void renderBars(Graphics g) {
         for (int i = 0; i < barArray.getSize(); i++) {
-            barArray.getBar(i).draw(g);
+            barArray.getBar(i).draw(i, g);
         }
     }
 

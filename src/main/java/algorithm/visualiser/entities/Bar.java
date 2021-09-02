@@ -6,16 +6,12 @@ import java.awt.Graphics2D;
 
 public class Bar {
 
-    private int index;
-
     private int width;
     private int height;
 
     private Color colour;
 
-    public Bar(int index, int width, int height) {
-        this.index = index;
-
+    public Bar(int width, int height) {
         this.width = width;
         this.height = height;
 
@@ -38,7 +34,7 @@ public class Bar {
         this.colour = colour;
     }
 
-    public void draw(Graphics g) {
+    public void draw(int index, Graphics g) {
         Graphics2D g2d = (Graphics2D)g;
 
         g2d.setColor(colour);

@@ -3,7 +3,6 @@ package algorithm.visualiser.main;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
-import algorithm.visualiser.entities.Bar;
 import algorithm.visualiser.gui.RenderCanvas;
 import algorithm.visualiser.gui.Window;
 

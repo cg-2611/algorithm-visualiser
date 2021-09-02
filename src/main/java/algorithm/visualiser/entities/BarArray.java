@@ -20,6 +20,7 @@ public class BarArray {
         this.barHeight = barHeight;
 
         resetBars();
+        shuffleBars();
     }
 
     public Bar[] getBars() {
@@ -36,8 +37,21 @@ public class BarArray {
 
     public void resetBars() {
         for (int i = 0; i < size; i++) {
-            Bar bar = new Bar(i, barWidth, barHeight + (i * 20));
+            Bar bar = new Bar(barWidth, barHeight + (i * 20));
             bars[i] = bar;
+        }
+    }
+
+    public void shuffleBars() {
+        int index;
+        Bar temp;
+        Random random = new Random();
+
+        for (int i = bars.length - 1; i > 0; i--) {
+            index = random.nextInt(i + 1);
+            temp = bars[index];
+            bars[index] = bars[i];
+            bars[i] = temp;
         }
     }
 
