@@ -6,11 +6,12 @@ public class Array {
 
     private int[] array;
 
-    public Array(int size) {
+    public Array(int size, int maxHeight) {
         array = new int[size];
 
+        int heightInterval = maxHeight / size;
         for (int i = 0; i < array.length; i++) {
-            array[i] = 50 + (i * 20);
+            array[i] = heightInterval + (i * heightInterval);
         }
     }
 

@@ -25,8 +25,8 @@ public class Window extends JFrame {
     private void initialise() {
         this.setTitle(this.title);
         this.setSize(new Dimension(this.width, this.height));
-        this.setMinimumSize(new Dimension(500, 200));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.setLayout(null);
 

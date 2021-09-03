@@ -8,20 +8,26 @@ import algorithm.visualiser.util.Array;
 
 public class RenderCanvas extends Canvas {
 
+    private static final int HORIZONTAL_PADDING = 25;
+    private static final int VERTICAL_PADDING = 50;
+
     private int width;
     private int height;
 
     private Array array;
 
+    private int barWidth;
+
     public RenderCanvas(int width, int height) {
         this.width = width;
         this.height = height;
 
-        array = new Array(25);
-
+        array = new Array(50, height - (VERTICAL_PADDING * 2));
         array.shuffle();
 
-        this.setBackground(Color.WHITE);
+        barWidth = (width - (HORIZONTAL_PADDING * 2)) / array.size();
+
+        setBackground(Color.WHITE);
     }
 
     public int getWidth() {
@@ -43,8 +49,13 @@ public class RenderCanvas extends Canvas {
         }
     }
 
-    public void renderBar(Graphics g, int index, int height) {
-        g.fillRect((index * 25) + 225 , 600 - height, 25, height);
+    public void renderBar(Graphics g, int index, int barHeight) {
+        g.fillRect((index * barWidth) + HORIZONTAL_PADDING + barWidth, height - VERTICAL_PADDING - barHeight, barWidth, barHeight);
+    }
+
+    public void renderCurrentBar(Graphics g, int index) {
+        g.setColor(Color.RED);
+        renderBar(g, index, array.get(index));
     }
 
 }

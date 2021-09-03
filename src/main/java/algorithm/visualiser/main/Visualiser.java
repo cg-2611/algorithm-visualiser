@@ -1,6 +1,5 @@
 package algorithm.visualiser.main;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
@@ -37,6 +36,10 @@ public class Visualiser implements Runnable {
         window.setVisible(true);
 
         renderCanvas = window.getRenderCanvas();
+
+        if (renderCanvas.getBufferStrategy() == null) {
+            renderCanvas.createBufferStrategy(3);
+        }
     }
 
     public synchronized void start() {
@@ -70,23 +73,14 @@ public class Visualiser implements Runnable {
 
     public void render() {
         bs = renderCanvas.getBufferStrategy();
-
-        if (bs == null) {
-            renderCanvas.createBufferStrategy(3);
-            return;
-        }
-
         g = bs.getDrawGraphics();
 
         g.clearRect(0, 0, width, height);
 
         renderCanvas.renderBars(g);
-
-        g.setColor(Color.RED);
-        renderCanvas.renderBar(g, currentBar, renderCanvas.getArray().get(currentBar));
+        renderCanvas.renderCurrentBar(g, currentBar);
 
         bs.show();
-
         g.dispose();
     }
 
@@ -95,10 +89,10 @@ public class Visualiser implements Runnable {
         initialise();
 
         while (running) {
-            render();
             update();
+            render();
             try {
-                Thread.sleep(500);
+                Thread.sleep(250);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
