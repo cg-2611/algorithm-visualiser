@@ -21,7 +21,7 @@ public class RenderCanvas extends Canvas {
 
         array.shuffle();
 
-        this.setBackground(Color.DARK_GRAY);
+        this.setBackground(Color.WHITE);
     }
 
     public int getWidth() {
@@ -32,15 +32,19 @@ public class RenderCanvas extends Canvas {
         return height;
     }
 
-    public void renderBar(Graphics g, int index, int height) {
-        g.fillRect((index * 25) + 225 , 600 - height, 25, height);
+    public Array getArray() {
+        return array;
     }
 
     public void renderBars(Graphics g) {
-        g.setColor(Color.WHITE);
+        g.setColor(Color.DARK_GRAY);
         for (int i = 0; i < array.size(); i++) {
             renderBar(g, i, array.get(i));
         }
+    }
+
+    public void renderBar(Graphics g, int index, int height) {
+        g.fillRect((index * 25) + 225 , 600 - height, 25, height);
     }
 
 }
