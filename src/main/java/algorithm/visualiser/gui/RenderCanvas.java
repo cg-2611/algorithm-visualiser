@@ -3,21 +3,23 @@ package algorithm.visualiser.gui;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
-
-import algorithm.visualiser.entities.BarArray;
+import java.util.Random;
 
 public class RenderCanvas extends Canvas {
 
     private int width;
     private int height;
 
-    private BarArray barArray;
+    private int[] array;
 
     public RenderCanvas(int width, int height) {
         this.width = width;
         this.height = height;
 
-        barArray = new BarArray(25, 10, 50);
+        array = new int[25];
+
+        createArray();
+        shuffleArray();
 
         this.setBackground(Color.DARK_GRAY);
     }
@@ -30,9 +32,31 @@ public class RenderCanvas extends Canvas {
         return height;
     }
 
+    public void createArray() {
+        for (int i = 0; i < array.length; i++) {
+            array[i] = 50 + (i * 20);
+        }
+    }
+
+    public void shuffleArray() {
+        Random random = new Random();
+
+        for (int i = array.length - 1; i > 0; i--) {
+            int index = random.nextInt(i + 1);
+            int temp = array[index];
+            array[index] = array[i];
+            array[i] = temp;
+        }
+    }
+
+    public void renderBar(Graphics g, int index, int height) {
+        g.fillRect((index * 25) + 225 , 600 - height, 25, height);
+    }
+
     public void renderBars(Graphics g) {
-        for (int i = 0; i < barArray.getSize(); i++) {
-            barArray.getBar(i).draw(i, g);
+        g.setColor(Color.WHITE);
+        for (int i = 0; i < array.length; i++) {
+            renderBar(g, i, array[i]);
         }
     }
 

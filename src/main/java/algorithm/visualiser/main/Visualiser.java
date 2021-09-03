@@ -61,6 +61,10 @@ public class Visualiser implements Runnable {
         }
     }
 
+    public void update() {
+
+    }
+
     public void render() {
         bs = renderCanvas.getBufferStrategy();
 
@@ -85,7 +89,7 @@ public class Visualiser implements Runnable {
         initialise();
 
         while (running) {
-            // update
+            update();
             render();
         }
 
