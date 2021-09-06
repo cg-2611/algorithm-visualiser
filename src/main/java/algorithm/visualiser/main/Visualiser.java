@@ -21,14 +21,12 @@ public class Visualiser implements Runnable {
     private BufferStrategy bs;
     private Graphics g;
 
-    private int currentBar = -1;
-
     public Visualiser(String title, int width, int height) {
         this.title = title;
         this.width = width;
         this.height = height;
 
-        this.running = false;
+        running = false;
     }
 
     public void initialise() {
@@ -68,7 +66,7 @@ public class Visualiser implements Runnable {
     }
 
     public void update() {
-        currentBar = (currentBar + 1) % renderCanvas.getArray().size();
+
     }
 
     public void render() {
@@ -78,7 +76,6 @@ public class Visualiser implements Runnable {
         g.clearRect(0, 0, width, height);
 
         renderCanvas.renderBars(g);
-        renderCanvas.renderCurrentBar(g, currentBar);
 
         bs.show();
         g.dispose();
@@ -91,11 +88,6 @@ public class Visualiser implements Runnable {
         while (running) {
             update();
             render();
-            try {
-                Thread.sleep(250);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
 
         stop();
