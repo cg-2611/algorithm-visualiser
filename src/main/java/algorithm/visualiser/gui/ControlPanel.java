@@ -21,13 +21,13 @@ public class ControlPanel extends JPanel {
 
     private JPanel optionPanel;
 
-    private JPanel arrayLengthOptions;
-    private JLabel arrayLengthLabel;
-    private JSlider arrayLengthSlider;
-
     private JPanel cardPanel;
     private JPanel sortingOptionsPanel;
     private JPanel searchingOptionsPanel;
+
+    private JPanel arrayLengthOptionPanel;
+    private JLabel arrayLengthLabel;
+    private JSlider arrayLengthSlider;
 
     public ControlPanel() {
         initialise();
@@ -84,13 +84,16 @@ public class ControlPanel extends JPanel {
         searchingOptionsPanel.add(new JLabel("Searching"));
         cardPanel.add(searchingOptionsPanel, "searching");
 
-        arrayLengthOptions = new JPanel();
-        arrayLengthOptions.setLayout(new FlowLayout());
+        arrayLengthOptionPanel = new JPanel();
+        arrayLengthOptionPanel.setLayout(new FlowLayout());
+        optionPanel.add(arrayLengthOptionPanel);
 
         arrayLengthLabel = new JLabel("Array Length:");
-        arrayLengthOptions.add(arrayLengthLabel);
+        arrayLengthOptionPanel.add(arrayLengthLabel);
 
         arrayLengthSlider = new JSlider();
-        arrayLengthOptions.add(arrayLengthSlider);
+        arrayLengthOptionPanel.add(arrayLengthSlider);
+
+        add(optionPanel, BorderLayout.CENTER);
     }
 }
