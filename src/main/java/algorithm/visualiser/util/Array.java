@@ -22,6 +22,10 @@ public class Array {
         return array[index];
     }
 
+    public int[] getArray() {
+        return array;
+    }
+
     public void shuffle() {
         Random random = new Random();
 

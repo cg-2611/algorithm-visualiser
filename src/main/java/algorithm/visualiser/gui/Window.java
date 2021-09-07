@@ -25,15 +25,15 @@ public class Window extends JFrame {
     private void initialise() {
         setTitle(title);
         getContentPane().setPreferredSize(new Dimension(width, height));
+        setMinimumSize(new Dimension(300, 300));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setResizable(false);
         setLayout(new BorderLayout());
 
-        renderCanvas = new RenderCanvas(width, height);
+        renderCanvas = new RenderCanvas();
         add(renderCanvas, BorderLayout.CENTER);
 
-        controlPanel = new ControlPanel(width, 50);
-        controlPanel.setPreferredSize(new Dimension(width, 50));
+        controlPanel = new ControlPanel();
+        controlPanel.setPreferredSize(new Dimension(width, (int) height / 10));
         add(controlPanel, BorderLayout.SOUTH);
 
         pack();

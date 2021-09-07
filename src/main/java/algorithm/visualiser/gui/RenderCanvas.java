@@ -8,26 +8,12 @@ import algorithm.visualiser.util.Array;
 
 public class RenderCanvas extends Canvas {
 
-    private int width;
-    private int height;
-
     private Array array;
 
-    public RenderCanvas(int width, int height) {
-        this.width = width;
-        this.height = height;
-
+    public RenderCanvas() {
         array = new Array(10);
 
-        setBackground(Color.RED);
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
+        setBackground(Color.WHITE);
     }
 
     public void renderBars(Graphics g) {

@@ -8,7 +8,7 @@ public class Launcher {
 
     private static final String TITLE = "Algorithm Visualiser";
 
-    private static final int WIDTH = (int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2);
+    private static final int WIDTH = (int)((Toolkit.getDefaultToolkit().getScreenSize().getWidth() * 3) / 4);
     private static final int HEIGHT = (WIDTH * 9) / 16;
 
     public static void main(String[] args) {
