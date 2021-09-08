@@ -3,6 +3,7 @@ package algorithm.visualiser.main;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
+import algorithm.visualiser.gui.ControlPanel;
 import algorithm.visualiser.gui.RenderCanvas;
 import algorithm.visualiser.gui.Window;
 
@@ -14,12 +15,16 @@ public class Visualiser implements Runnable {
 
     private Window window;
     private RenderCanvas renderCanvas;
+    private ControlPanel controlPanel;
 
     private Boolean running;
     private Thread thread;
 
     private BufferStrategy bs;
     private Graphics g;
+
+    private int currentIndex1 = -1;
+    private int currentIndex2 = currentIndex1 + 2;
 
     public Visualiser(String title, int width, int height) {
         this.title = title;
@@ -34,6 +39,7 @@ public class Visualiser implements Runnable {
         window.setVisible(true);
 
         renderCanvas = window.getRenderCanvas();
+        controlPanel = window.getControlPanel();
 
         if (renderCanvas.getBufferStrategy() == null) {
             renderCanvas.createBufferStrategy(3);
@@ -66,7 +72,8 @@ public class Visualiser implements Runnable {
     }
 
     public void update() {
-
+        currentIndex1 = (currentIndex1 + 1) % renderCanvas.getArray().size();
+        currentIndex2 = (currentIndex2 + 2) % renderCanvas.getArray().size();
     }
 
     public void render() {
@@ -77,6 +84,11 @@ public class Visualiser implements Runnable {
 
         renderCanvas.renderBars(g);
 
+        if (controlPanel.getAlgorithmRunning()) {
+            renderCanvas.renderActiveBar(g, currentIndex1);
+            renderCanvas.renderActiveBar(g, currentIndex2);
+        }
+
         bs.show();
         g.dispose();
     }
@@ -86,8 +98,17 @@ public class Visualiser implements Runnable {
         initialise();
 
         while (running) {
-            update();
+            if (controlPanel.getAlgorithmRunning()) {
+                update();
+            }
+
             render();
+
+            try {
+                Thread.sleep(250);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
         stop();

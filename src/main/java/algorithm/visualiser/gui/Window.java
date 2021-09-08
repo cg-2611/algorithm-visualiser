@@ -22,10 +22,18 @@ public class Window extends JFrame {
         initialise();
     }
 
+    public RenderCanvas getRenderCanvas() {
+        return renderCanvas;
+    }
+
+    public ControlPanel getControlPanel() {
+        return controlPanel;
+    }
+
     private void initialise() {
         setTitle(title);
         getContentPane().setPreferredSize(new Dimension(width, height));
-        setMinimumSize(new Dimension(300, 300));
+        setMinimumSize(new Dimension(600, 300));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
@@ -33,14 +41,10 @@ public class Window extends JFrame {
         add(renderCanvas, BorderLayout.CENTER);
 
         controlPanel = new ControlPanel();
-        controlPanel.setPreferredSize(new Dimension(width, (int) height / 10));
+        controlPanel.setPreferredSize(new Dimension(width, 75));
         add(controlPanel, BorderLayout.SOUTH);
 
         pack();
-    }
-
-    public RenderCanvas getRenderCanvas() {
-        return renderCanvas;
     }
 
 }
