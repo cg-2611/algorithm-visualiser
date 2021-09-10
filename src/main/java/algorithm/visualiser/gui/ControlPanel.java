@@ -3,6 +3,7 @@ package algorithm.visualiser.gui;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
@@ -15,157 +16,201 @@ import javax.swing.JSpinner;
 
 public class ControlPanel extends JPanel {
 
-    private JPanel cardPanel;
+    private JPanel switchPanel;
+    private JPanel buttonPanel;
+    private JPanel optionsPanel;
+    private JPanel algorithmOptionsPanel;
+    private JPanel sortingOptionsPanel;
+    private JPanel searchingOptionsPanel;
+    private JPanel arrayOptionsPanel;
 
-    private Boolean algorithmRunning = false;
+    private JButton typeSwitch;
+
+    private JButton runButton;
+    private JButton shuffleButton;
+
+    private JLabel sortingOptionsLabel;
+    private JComboBox<String> sortingOptionsDropdown;
+
+    private JLabel searchingOptionsLabel;
+    private JComboBox<String> searchingOptionsDropdown;
+    private JLabel searchingTargetOptionLabel;
+    private JSpinner searchingTargetOptionsSpinner;
+
+    private JLabel arrayOptionLabel;
+    private JLabel arrayLengthValue;
+    private JSlider arrayLengthSlider;
+
+    private int typeSelection;
     private int arrayLength;
+    private boolean algorithmRunning;
 
     public ControlPanel() {
+        typeSelection = 0;
+        algorithmRunning = false;
         initialise();
-    }
-
-    public Boolean getAlgorithmRunning() {
-        return algorithmRunning;
     }
 
     public int getArrayLength() {
         return arrayLength;
     }
 
-    public void setAlgorithmRunning(Boolean algorithmRunning) {
+    public boolean getAlgorithmRunning() {
+        return algorithmRunning;
+    }
+
+    public void setAlgorithmRunning(boolean algorithmRunning) {
         this.algorithmRunning = algorithmRunning;
+    }
+
+    public void updatePanel() {
+        if (!algorithmRunning) {
+            switchCardPanel(typeSwitch.getText().toLowerCase());
+
+            if (typeSelection == 0) {
+                typeSwitch.setText("Searching");
+            } else if (typeSelection == 1) {
+                typeSwitch.setText("Sorting");
+            }
+        } else {
+            enableComponents(false);
+        }
+    }
+
+    public void switchCardPanel(String cardName) {
+        CardLayout cl = (CardLayout) algorithmOptionsPanel.getLayout();
+        cl.show(algorithmOptionsPanel, cardName);
+    }
+
+    public void enableComponents(boolean enabled) {
+        runButton.setEnabled(enabled);
+        shuffleButton.setEnabled(enabled);
+
+        sortingOptionsDropdown.setEnabled(enabled);
+        searchingOptionsDropdown.setEnabled(enabled);
+        searchingTargetOptionsSpinner.setEnabled(enabled);
+
+        arrayLengthSlider.setEnabled(enabled);
     }
 
     private void initialise() {
         setLayout(new BorderLayout());
 
-        JPanel selectPanel = createSelectPanel();
-        add(selectPanel, BorderLayout.WEST);
+        initialiseSwitchPanel();
+        add(switchPanel, BorderLayout.WEST);
 
-        JPanel buttonPanel = createButtonPanel();
+        initialiseButtonPanel();
         add(buttonPanel, BorderLayout.EAST);
 
-        JPanel optionPanel = createOptionsPanel();
-        add(optionPanel, BorderLayout.CENTER);
+        initialiseOptionsPanel();
+        add(optionsPanel, BorderLayout.CENTER);
     }
 
-    private JPanel createSelectPanel() {
-        JPanel selectPanel = new JPanel();
-        selectPanel.setLayout(new FlowLayout());
+    private void initialiseSwitchPanel() {
+        switchPanel = new JPanel();
+        switchPanel.setLayout(new FlowLayout());
 
-        JButton typeSwitch = new JButton("Searching");
+        typeSwitch = new JButton("Searching");
         typeSwitch.addActionListener((e) -> {
-            CardLayout cl = (CardLayout) cardPanel.getLayout();
             if (typeSwitch.getText().equals("Sorting")) {
-                cl.show(cardPanel, typeSwitch.getText().toLowerCase());
-                typeSwitch.setText("Searching");
+                typeSelection = 0;
             } else if (typeSwitch.getText().equals("Searching")) {
-                cl.show(cardPanel, typeSwitch.getText().toLowerCase());
-                typeSwitch.setText("Sorting");
+                typeSelection = 1;
             }
+
+            updatePanel();
         });
 
-        selectPanel.add(typeSwitch);
-
-        return selectPanel;
+        switchPanel.add(typeSwitch);
     }
 
-    private JPanel createButtonPanel() {
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
+    private void initialiseButtonPanel() {
+        buttonPanel = new JPanel();
+        buttonPanel.setLayout(new GridLayout(0, 1, 0, 5));
 
-        JButton runButton = new JButton("Run");
+        runButton = new JButton("Run");
         runButton.addActionListener((e) -> {
             algorithmRunning = true;
+            updatePanel();
         });
 
-        JButton resetButton = new JButton("Reset");
-        resetButton.addActionListener((e) -> {
-            // reset visualisation
+        shuffleButton = new JButton("Shuffle");
+        shuffleButton.addActionListener((e) -> {
+            // shuffle array
         });
 
         buttonPanel.add(runButton);
-        buttonPanel.add(resetButton);
-
-        return buttonPanel;
+        buttonPanel.add(shuffleButton);
     }
 
-    private JPanel createOptionsPanel() {
-        JPanel optionPanel = new JPanel();
-        optionPanel.setLayout(new BoxLayout(optionPanel, BoxLayout.Y_AXIS));
+    private void initialiseOptionsPanel() {
+        optionsPanel = new JPanel();
+        optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.Y_AXIS));
 
-        createCardPanel();
-        optionPanel.add(cardPanel);
+        initialiseAlgorithmOptionsPanel();
+        optionsPanel.add(algorithmOptionsPanel);
 
-        JPanel arrayOptionPanel = createArrayOptionPanel();
-        optionPanel.add(arrayOptionPanel);
-
-        return optionPanel;
+        initialiseArrayOptionsPanel();
+        optionsPanel.add(arrayOptionsPanel);
     }
 
-    private void createCardPanel() {
-        cardPanel = new JPanel();
-        cardPanel.setLayout(new CardLayout());
+    private void initialiseAlgorithmOptionsPanel() {
+        algorithmOptionsPanel = new JPanel();
+        algorithmOptionsPanel.setLayout(new CardLayout());
 
-        JPanel sortingOptionsPanel = createSortingOptionsPanel();
-        cardPanel.add(sortingOptionsPanel, "sorting");
+        initialiseSortingOptionsPanel();
+        algorithmOptionsPanel.add(sortingOptionsPanel, "sorting");
 
-        JPanel searchingOptionsPanel = createSearchingOptionsPanel();
-        cardPanel.add(searchingOptionsPanel, "searching");
+        initialiseSearchingOptionsPanel();
+        algorithmOptionsPanel.add(searchingOptionsPanel, "searching");
     }
 
-    private JPanel createSortingOptionsPanel() {
-        JPanel sortingOptionsPanel = new JPanel();
+    private void initialiseSortingOptionsPanel() {
+        sortingOptionsPanel = new JPanel();
         sortingOptionsPanel.setLayout(new FlowLayout());
 
-        JLabel sortingOptionsLabel = new JLabel("Sorting Algorithm:");
+        sortingOptionsLabel = new JLabel("Sorting Algorithm:");
         sortingOptionsPanel.add(sortingOptionsLabel);
 
-        JComboBox<String> sortingOptionsDropdown = new JComboBox<String>();
+        sortingOptionsDropdown = new JComboBox<String>();
         sortingOptionsDropdown.setModel(new DefaultComboBoxModel<String>(new String[] {"Bubble Sort"}));
         sortingOptionsPanel.add(sortingOptionsDropdown);
-
-        return sortingOptionsPanel;
     }
 
-    private JPanel createSearchingOptionsPanel() {
-        JPanel searchingOptionsPanel = new JPanel();
+    private void initialiseSearchingOptionsPanel() {
+        searchingOptionsPanel = new JPanel();
         searchingOptionsPanel.setLayout(new FlowLayout());
 
-        JLabel searchingOptionsLabel = new JLabel("Searching Algorithm:");
+        searchingOptionsLabel = new JLabel("Searching Algorithm:");
         searchingOptionsPanel.add(searchingOptionsLabel);
 
-        JComboBox<String> searchingOptionsDropdown = new JComboBox<String>();
+        searchingOptionsDropdown = new JComboBox<String>();
         searchingOptionsDropdown.setModel(new DefaultComboBoxModel<String>(new String[] {"Linear Search"}));
         searchingOptionsPanel.add(searchingOptionsDropdown);
 
-        JLabel searchingTargetOptionLabel = new JLabel("Target:");
+        searchingTargetOptionLabel = new JLabel("Target:");
         searchingOptionsPanel.add(searchingTargetOptionLabel);
 
-        JSpinner searchingTargetOptionsSpinner = new JSpinner();
+        searchingTargetOptionsSpinner = new JSpinner();
         searchingOptionsPanel.add(searchingTargetOptionsSpinner);
-
-        return searchingOptionsPanel;
     }
 
-    private JPanel createArrayOptionPanel() {
-        JPanel arrayOptionPanel = new JPanel();
-        arrayOptionPanel.setLayout(new FlowLayout());
+    private void initialiseArrayOptionsPanel() {
+        arrayOptionsPanel = new JPanel();
+        arrayOptionsPanel.setLayout(new FlowLayout());
 
-        JLabel arrayOptionLabel = new JLabel("Array Length:");
-        arrayOptionPanel.add(arrayOptionLabel);
+        arrayOptionLabel = new JLabel("Array Length:");
+        arrayOptionsPanel.add(arrayOptionLabel);
 
-        JLabel arrayLengthValue = new JLabel("10");
-        arrayOptionPanel.add(arrayLengthValue);
+        arrayLengthValue = new JLabel("10");
+        arrayOptionsPanel.add(arrayLengthValue);
 
-        JSlider arrayLengthSlider = new JSlider();
+        arrayLengthSlider = new JSlider();
         arrayLengthSlider.addChangeListener((e) -> {
             arrayLength = arrayLengthSlider.getValue();
             arrayLengthValue.setText(String.valueOf(arrayLength));
         });
-        arrayOptionPanel.add(arrayLengthSlider);
-
-        return arrayOptionPanel;
+        arrayOptionsPanel.add(arrayLengthSlider);
     }
 
 }
