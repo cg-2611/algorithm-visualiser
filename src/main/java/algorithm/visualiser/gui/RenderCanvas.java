@@ -20,9 +20,13 @@ public class RenderCanvas extends Canvas {
         return array;
     }
 
+    public void updateArray(int length) {
+        array = new Array(length);
+    }
+
     public void renderBars(Graphics g) {
         g.setColor(Color.DARK_GRAY);
-        for (int i = 0; i < array.size(); i++) {
+        for (int i = array.size() - 1; i >= 0; i--) {
             renderBar(g, i);
         }
     }
@@ -31,7 +35,7 @@ public class RenderCanvas extends Canvas {
         int barWidth = getWidth() / array.size();
         int barHeight = ((getHeight() - 5) / array.size()) * array.get(index);
 
-        int x = barWidth * index;
+        int x = getWidth() - (barWidth * (array.size() - index));
         int y = getHeight() - barHeight;
 
         g.fillRect(x, y, barWidth, barHeight);

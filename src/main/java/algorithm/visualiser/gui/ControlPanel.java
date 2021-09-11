@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 
 import javax.swing.BoxLayout;
+import javax.swing.DefaultBoundedRangeModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -15,6 +16,10 @@ import javax.swing.JSlider;
 import javax.swing.JSpinner;
 
 public class ControlPanel extends JPanel {
+
+    private static final int[] ARRAY_LENGTHS = {5, 10, 25, 50, 100, 250, 500};
+
+    private Window window;
 
     private JPanel switchPanel;
     private JPanel buttonPanel;
@@ -45,9 +50,12 @@ public class ControlPanel extends JPanel {
     private int arrayLength;
     private boolean algorithmRunning;
 
-    public ControlPanel() {
+    public ControlPanel(Window window) {
+        this.window = window;
+
         typeSelection = 0;
         algorithmRunning = false;
+
         initialise();
     }
 
@@ -63,17 +71,13 @@ public class ControlPanel extends JPanel {
         this.algorithmRunning = algorithmRunning;
     }
 
-    public void updatePanel() {
-        if (!algorithmRunning) {
-            switchCardPanel(typeSwitch.getText().toLowerCase());
+    public void updateCardPanel() {
+        switchCardPanel(typeSwitch.getText().toLowerCase());
 
-            if (typeSelection == 0) {
-                typeSwitch.setText("Searching");
-            } else if (typeSelection == 1) {
-                typeSwitch.setText("Sorting");
-            }
-        } else {
-            enableComponents(false);
+        if (typeSelection == 0) {
+            typeSwitch.setText("Searching");
+        } else if (typeSelection == 1) {
+            typeSwitch.setText("Sorting");
         }
     }
 
@@ -91,6 +95,11 @@ public class ControlPanel extends JPanel {
         searchingTargetOptionsSpinner.setEnabled(enabled);
 
         arrayLengthSlider.setEnabled(enabled);
+    }
+
+    private void updateArrayLength(int value) {
+        arrayLength = value;
+        window.getRenderCanvas().updateArray(arrayLength);
     }
 
     private void initialise() {
@@ -118,7 +127,7 @@ public class ControlPanel extends JPanel {
                 typeSelection = 1;
             }
 
-            updatePanel();
+            updateCardPanel();
         });
 
         switchPanel.add(typeSwitch);
@@ -130,13 +139,13 @@ public class ControlPanel extends JPanel {
 
         runButton = new JButton("Run");
         runButton.addActionListener((e) -> {
-            algorithmRunning = true;
-            updatePanel();
+            setAlgorithmRunning(true);
+            enableComponents(false);
         });
 
         shuffleButton = new JButton("Shuffle");
         shuffleButton.addActionListener((e) -> {
-            // shuffle array
+            window.getRenderCanvas().getArray().shuffle();
         });
 
         buttonPanel.add(runButton);
@@ -206,11 +215,14 @@ public class ControlPanel extends JPanel {
         arrayOptionsPanel.add(arrayLengthValue);
 
         arrayLengthSlider = new JSlider();
+        arrayLengthSlider.setModel(new DefaultBoundedRangeModel(2, 0, 0, ARRAY_LENGTHS.length - 1));
+        arrayLengthSlider.setSnapToTicks(true);
         arrayLengthSlider.addChangeListener((e) -> {
-            arrayLength = arrayLengthSlider.getValue();
+            updateArrayLength(ARRAY_LENGTHS[arrayLengthSlider.getValue()]);
             arrayLengthValue.setText(String.valueOf(arrayLength));
         });
         arrayOptionsPanel.add(arrayLengthSlider);
     }
+
 
 }

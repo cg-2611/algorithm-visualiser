@@ -40,7 +40,7 @@ public class Window extends JFrame {
         renderCanvas = new RenderCanvas();
         add(renderCanvas, BorderLayout.CENTER);
 
-        controlPanel = new ControlPanel();
+        controlPanel = new ControlPanel(this);
         controlPanel.setPreferredSize(new Dimension(width, 75));
         add(controlPanel, BorderLayout.SOUTH);
 
