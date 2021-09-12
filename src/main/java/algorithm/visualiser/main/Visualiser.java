@@ -69,7 +69,10 @@ public class Visualiser implements Runnable {
     }
 
     public void update() {
-
+        if (controlPanel.getAlgorithmSelection().isAlgorithmComplete()) {
+            controlPanel.enableComponents(true);
+            controlPanel.setAlgorithmRunning(false);
+        }
     }
 
     public void render() {
@@ -91,6 +94,12 @@ public class Visualiser implements Runnable {
         while (running) {
             if (controlPanel.getAlgorithmRunning()) {
                 update();
+
+                try {
+                    Thread.sleep(250);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
 
             render();

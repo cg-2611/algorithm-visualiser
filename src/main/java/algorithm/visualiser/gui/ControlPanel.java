@@ -15,8 +15,13 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
 
+import algorithm.visualiser.algorithms.Algorithm;
+import algorithm.visualiser.algorithms.BubbleSort;
+
 public class ControlPanel extends JPanel {
 
+    private static final Algorithm[] SORTING_ALGORITHMS = {new BubbleSort()};
+    private static final String[] SORTING_ALGORITHM_NAMES = {"Bubble Sort"};
     private static final int[] ARRAY_LENGTHS = {5, 10, 25, 50, 100, 250, 500};
 
     private Window window;
@@ -48,6 +53,7 @@ public class ControlPanel extends JPanel {
 
     private int typeSelection;
     private int arrayLength;
+    private Algorithm algorithmSelection;
     private boolean algorithmRunning;
 
     public ControlPanel(Window window) {
@@ -65,6 +71,10 @@ public class ControlPanel extends JPanel {
 
     public boolean getAlgorithmRunning() {
         return algorithmRunning;
+    }
+
+    public Algorithm getAlgorithmSelection() {
+        return algorithmSelection;
     }
 
     public void setAlgorithmRunning(boolean algorithmRunning) {
@@ -140,6 +150,9 @@ public class ControlPanel extends JPanel {
         runButton = new JButton("Run");
         runButton.addActionListener((e) -> {
             setAlgorithmRunning(true);
+            algorithmSelection = SORTING_ALGORITHMS[sortingOptionsDropdown.getSelectedIndex()];
+            algorithmSelection.setArray(window.getRenderCanvas().getArray().getArray());
+            algorithmSelection.run();
             enableComponents(false);
         });
 
@@ -182,7 +195,7 @@ public class ControlPanel extends JPanel {
         sortingOptionsPanel.add(sortingOptionsLabel);
 
         sortingOptionsDropdown = new JComboBox<String>();
-        sortingOptionsDropdown.setModel(new DefaultComboBoxModel<String>(new String[] {"Bubble Sort"}));
+        sortingOptionsDropdown.setModel(new DefaultComboBoxModel<String>(SORTING_ALGORITHM_NAMES));
         sortingOptionsPanel.add(sortingOptionsDropdown);
     }
 
