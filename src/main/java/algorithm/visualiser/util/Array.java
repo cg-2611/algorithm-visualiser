@@ -37,4 +37,16 @@ public class Array {
         }
     }
 
+    public void swap(int index1, int index2, int delay) {
+        int temp = array[index1];
+        array[index1] = array[index2];
+        array[index2] = temp;
+
+        try {
+            Thread.sleep(delay);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

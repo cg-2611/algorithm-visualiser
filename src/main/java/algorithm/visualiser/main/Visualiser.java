@@ -23,6 +23,8 @@ public class Visualiser implements Runnable {
     private BufferStrategy bs;
     private Graphics g;
 
+    private int[] activeIndexes;
+
     public Visualiser(String title, int width, int height) {
         this.title = title;
         this.width = width;
@@ -69,10 +71,7 @@ public class Visualiser implements Runnable {
     }
 
     public void update() {
-        if (controlPanel.getAlgorithmSelection().isAlgorithmComplete()) {
-            controlPanel.enableComponents(true);
-            controlPanel.setAlgorithmRunning(false);
-        }
+        activeIndexes = controlPanel.getAlgorithmSelection().getActiveIndexes();
     }
 
     public void render() {
@@ -82,6 +81,12 @@ public class Visualiser implements Runnable {
         g.clearRect(0, 0, width, height);
 
         renderCanvas.renderBars(g);
+
+        if (controlPanel.getAlgorithmRunning()) {
+            for (int i = 0; i < activeIndexes.length; i++) {
+                renderCanvas.renderActiveBar(g, activeIndexes[i]);
+            }
+        }
 
         bs.show();
         g.dispose();
@@ -94,12 +99,6 @@ public class Visualiser implements Runnable {
         while (running) {
             if (controlPanel.getAlgorithmRunning()) {
                 update();
-
-                try {
-                    Thread.sleep(250);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
             }
 
             render();

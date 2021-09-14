@@ -1,27 +1,27 @@
 package algorithm.visualiser.algorithms;
 
+import algorithm.visualiser.util.Array;
+
 public abstract class Algorithm {
 
     protected String name;
-    protected boolean algorithmComplete;
+    protected int delay;
 
-    protected int[] array;
+    protected Array array;
 
-    public Algorithm() {
-        this.algorithmComplete = false;
+    public Algorithm(int delay) {
+        this.delay = delay;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setArray(int[] array) {
+    public void setArray(Array array) {
         this.array = array;
     }
 
-    public boolean isAlgorithmComplete() {
-        return algorithmComplete;
-    }
+    public abstract int[] getActiveIndexes();
 
     public abstract void run();
 

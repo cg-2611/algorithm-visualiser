@@ -20,7 +20,7 @@ import algorithm.visualiser.algorithms.BubbleSort;
 
 public class ControlPanel extends JPanel {
 
-    private static final Algorithm[] SORTING_ALGORITHMS = {new BubbleSort()};
+    private static final Algorithm[] SORTING_ALGORITHMS = {new BubbleSort(250)};
     private static final String[] SORTING_ALGORITHM_NAMES = {"Bubble Sort"};
     private static final int[] ARRAY_LENGTHS = {5, 10, 25, 50, 100, 250, 500};
 
@@ -149,11 +149,13 @@ public class ControlPanel extends JPanel {
 
         runButton = new JButton("Run");
         runButton.addActionListener((e) -> {
+            enableComponents(false);
             setAlgorithmRunning(true);
             algorithmSelection = SORTING_ALGORITHMS[sortingOptionsDropdown.getSelectedIndex()];
-            algorithmSelection.setArray(window.getRenderCanvas().getArray().getArray());
+            algorithmSelection.setArray(window.getRenderCanvas().getArray());
             algorithmSelection.run();
-            enableComponents(false);
+            setAlgorithmRunning(false);
+            enableComponents(true);
         });
 
         shuffleButton = new JButton("Shuffle");
