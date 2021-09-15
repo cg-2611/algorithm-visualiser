@@ -9,9 +9,7 @@ public class Array {
     public Array(int size) {
         array = new int[size];
 
-        for (int i = 0; i < array.length; i++) {
-            array[i] = i + 1;
-        }
+        reset();
     }
 
     public int size() {
@@ -24,6 +22,18 @@ public class Array {
 
     public int[] getArray() {
         return array;
+    }
+
+    public void reset() {
+        for (int i = 0; i < array.length; i++) {
+            array[i] = i + 1;
+        }
+    }
+
+    public void reverse() {
+        for (int i = 0; i < array.length; i++) {
+            array[i] = array.length - i;
+        }
     }
 
     public void shuffle() {
@@ -41,12 +51,6 @@ public class Array {
         int temp = array[index1];
         array[index1] = array[index2];
         array[index2] = temp;
-
-        try {
-            Thread.sleep(delay);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
 }

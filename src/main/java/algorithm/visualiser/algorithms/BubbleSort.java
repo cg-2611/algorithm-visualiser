@@ -22,6 +22,12 @@ public class BubbleSort extends Algorithm {
                 if (array.get(j) > array.get(j + 1)) {
                     array.swap(j, j + 1, delay);
                 }
+
+                try {
+                    Thread.sleep(delay);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

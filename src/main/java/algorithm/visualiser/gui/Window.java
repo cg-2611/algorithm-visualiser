@@ -33,14 +33,14 @@ public class Window extends JFrame {
     private void initialise() {
         setTitle(title);
         getContentPane().setPreferredSize(new Dimension(width, height));
-        setMinimumSize(new Dimension(600, 300));
+        setMinimumSize(new Dimension(700, 300));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
         renderCanvas = new RenderCanvas();
         add(renderCanvas, BorderLayout.CENTER);
 
-        controlPanel = new ControlPanel(this);
+        controlPanel = new ControlPanel(renderCanvas);
         controlPanel.setPreferredSize(new Dimension(width, 75));
         add(controlPanel, BorderLayout.SOUTH);
 

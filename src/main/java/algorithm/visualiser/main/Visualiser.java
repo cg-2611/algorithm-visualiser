@@ -82,7 +82,7 @@ public class Visualiser implements Runnable {
 
         renderCanvas.renderBars(g);
 
-        if (controlPanel.getAlgorithmRunning()) {
+        if (controlPanel.isAlgorithmRunning()) {
             for (int i = 0; i < activeIndexes.length; i++) {
                 renderCanvas.renderActiveBar(g, activeIndexes[i]);
             }
@@ -97,7 +97,7 @@ public class Visualiser implements Runnable {
         initialise();
 
         while (running) {
-            if (controlPanel.getAlgorithmRunning()) {
+            if (controlPanel.isAlgorithmRunning()) {
                 update();
             }
 

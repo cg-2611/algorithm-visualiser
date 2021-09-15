@@ -4,44 +4,53 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.DefaultBoundedRangeModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
 
 import algorithm.visualiser.algorithms.Algorithm;
 import algorithm.visualiser.algorithms.BubbleSort;
+import algorithm.visualiser.algorithms.LinearSearch;
 
 public class ControlPanel extends JPanel {
 
     private static final Algorithm[] SORTING_ALGORITHMS = {new BubbleSort(250)};
+    private static final Algorithm[] SEARCHING_ALGORITHMS = {new LinearSearch(250)};
     private static final String[] SORTING_ALGORITHM_NAMES = {"Bubble Sort"};
     private static final int[] ARRAY_LENGTHS = {5, 10, 25, 50, 100, 250, 500};
 
-    private Window window;
+    private RenderCanvas renderCanvas;
 
-    private JPanel switchPanel;
+    private JPanel selectionPanel;
+    private ButtonGroup buttonGroup;
+    private JRadioButton sortingButton;
+    private JRadioButton searchingButton;
+
     private JPanel buttonPanel;
-    private JPanel optionsPanel;
-    private JPanel algorithmOptionsPanel;
-    private JPanel sortingOptionsPanel;
-    private JPanel searchingOptionsPanel;
-    private JPanel arrayOptionsPanel;
-
-    private JButton typeSwitch;
-
+    private JButton resetButton;
     private JButton runButton;
     private JButton shuffleButton;
+    private JButton reverseButton;
 
+    private JPanel optionsPanel;
+    private JPanel algorithmOptionsPanel;
+    private JPanel arrayOptionsPanel;
+
+    private JPanel sortingOptionsPanel;
     private JLabel sortingOptionsLabel;
     private JComboBox<String> sortingOptionsDropdown;
 
+    private JPanel searchingOptionsPanel;
     private JLabel searchingOptionsLabel;
     private JComboBox<String> searchingOptionsDropdown;
     private JLabel searchingTargetOptionLabel;
@@ -51,145 +60,105 @@ public class ControlPanel extends JPanel {
     private JLabel arrayLengthValue;
     private JSlider arrayLengthSlider;
 
-    private int typeSelection;
-    private int arrayLength;
+    private String algorithmTypeSelection;
     private Algorithm algorithmSelection;
     private boolean algorithmRunning;
+    private int arrayLength;
 
-    public ControlPanel(Window window) {
-        this.window = window;
+    public ControlPanel(RenderCanvas renderCanvas) {
+        this.renderCanvas = renderCanvas;
 
-        typeSelection = 0;
+        algorithmTypeSelection = "Sorting";
         algorithmRunning = false;
+        arrayLength = 10;
 
         initialise();
-    }
-
-    public int getArrayLength() {
-        return arrayLength;
-    }
-
-    public boolean getAlgorithmRunning() {
-        return algorithmRunning;
     }
 
     public Algorithm getAlgorithmSelection() {
         return algorithmSelection;
     }
 
-    public void setAlgorithmRunning(boolean algorithmRunning) {
-        this.algorithmRunning = algorithmRunning;
-    }
-
-    public void updateCardPanel() {
-        switchCardPanel(typeSwitch.getText().toLowerCase());
-
-        if (typeSelection == 0) {
-            typeSwitch.setText("Searching");
-        } else if (typeSelection == 1) {
-            typeSwitch.setText("Sorting");
-        }
-    }
-
-    public void switchCardPanel(String cardName) {
-        CardLayout cl = (CardLayout) algorithmOptionsPanel.getLayout();
-        cl.show(algorithmOptionsPanel, cardName);
-    }
-
-    public void enableComponents(boolean enabled) {
-        runButton.setEnabled(enabled);
-        shuffleButton.setEnabled(enabled);
-
-        sortingOptionsDropdown.setEnabled(enabled);
-        searchingOptionsDropdown.setEnabled(enabled);
-        searchingTargetOptionsSpinner.setEnabled(enabled);
-
-        arrayLengthSlider.setEnabled(enabled);
-    }
-
-    private void updateArrayLength(int value) {
-        arrayLength = value;
-        window.getRenderCanvas().updateArray(arrayLength);
+    public boolean isAlgorithmRunning() {
+        return algorithmRunning;
     }
 
     private void initialise() {
         setLayout(new BorderLayout());
 
-        initialiseSwitchPanel();
-        add(switchPanel, BorderLayout.WEST);
+        selectionPanel = new JPanel();
+        selectionPanel.setLayout(new BoxLayout(selectionPanel, BoxLayout.Y_AXIS));
+        add(selectionPanel, BorderLayout.WEST);
 
-        initialiseButtonPanel();
-        add(buttonPanel, BorderLayout.EAST);
+        buttonGroup = new ButtonGroup();
 
-        initialiseOptionsPanel();
-        add(optionsPanel, BorderLayout.CENTER);
-    }
-
-    private void initialiseSwitchPanel() {
-        switchPanel = new JPanel();
-        switchPanel.setLayout(new FlowLayout());
-
-        typeSwitch = new JButton("Searching");
-        typeSwitch.addActionListener((e) -> {
-            if (typeSwitch.getText().equals("Sorting")) {
-                typeSelection = 0;
-            } else if (typeSwitch.getText().equals("Searching")) {
-                typeSelection = 1;
-            }
-
-            updateCardPanel();
+        sortingButton = new JRadioButton("Sorting");
+        sortingButton.setSelected(true);
+        sortingButton.addActionListener((e) -> {
+            switchAlgorithmOptions(e);
         });
 
-        switchPanel.add(typeSwitch);
-    }
+        searchingButton = new JRadioButton("Searching");
+        searchingButton.addActionListener((e) -> {
+            switchAlgorithmOptions(e);
+        });
 
-    private void initialiseButtonPanel() {
+        buttonGroup.add(sortingButton);
+        buttonGroup.add(searchingButton);
+
+        selectionPanel.add(sortingButton);
+        selectionPanel.add(searchingButton);
+
         buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(0, 1, 0, 5));
+        buttonPanel.setLayout(new GridLayout(2, 2));
+        add(buttonPanel, BorderLayout.EAST);
+
+        resetButton = new JButton("Reset");
+        resetButton.addActionListener((e) -> {
+            renderCanvas.getArray().reset();
+        });
+        buttonPanel.add(resetButton);
 
         runButton = new JButton("Run");
         runButton.addActionListener((e) -> {
-            enableComponents(false);
-            setAlgorithmRunning(true);
-            algorithmSelection = SORTING_ALGORITHMS[sortingOptionsDropdown.getSelectedIndex()];
-            algorithmSelection.setArray(window.getRenderCanvas().getArray());
-            algorithmSelection.run();
-            setAlgorithmRunning(false);
-            enableComponents(true);
+            if (algorithmTypeSelection.equals("Sorting")) {
+                algorithmSelection = SORTING_ALGORITHMS[sortingOptionsDropdown.getSelectedIndex()];
+                algorithmSelection.setArray(renderCanvas.getArray());
+
+                algorithmRunning = true;
+                algorithmSelection.run();
+                algorithmRunning = false;
+            } else if (algorithmTypeSelection.equals("Searching")) {
+                algorithmSelection = SEARCHING_ALGORITHMS[searchingOptionsDropdown.getSelectedIndex()];
+                algorithmSelection.setArray(renderCanvas.getArray());
+
+                algorithmRunning = true;
+                algorithmSelection.run();
+                algorithmRunning = false;
+            }
         });
+        buttonPanel.add(runButton);
 
         shuffleButton = new JButton("Shuffle");
         shuffleButton.addActionListener((e) -> {
-            window.getRenderCanvas().getArray().shuffle();
+            renderCanvas.getArray().shuffle();
         });
-
-        buttonPanel.add(runButton);
         buttonPanel.add(shuffleButton);
-    }
 
-    private void initialiseOptionsPanel() {
+        reverseButton = new JButton("Reverse");
+        reverseButton.addActionListener((e) -> {
+            renderCanvas.getArray().reverse();
+        });
+        buttonPanel.add(reverseButton);
+
         optionsPanel = new JPanel();
         optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.Y_AXIS));
+        add(optionsPanel, BorderLayout.CENTER);
 
-        initialiseAlgorithmOptionsPanel();
-        optionsPanel.add(algorithmOptionsPanel);
-
-        initialiseArrayOptionsPanel();
-        optionsPanel.add(arrayOptionsPanel);
-    }
-
-    private void initialiseAlgorithmOptionsPanel() {
         algorithmOptionsPanel = new JPanel();
         algorithmOptionsPanel.setLayout(new CardLayout());
+        optionsPanel.add(algorithmOptionsPanel);
 
-        initialiseSortingOptionsPanel();
-        algorithmOptionsPanel.add(sortingOptionsPanel, "sorting");
-
-        initialiseSearchingOptionsPanel();
-        algorithmOptionsPanel.add(searchingOptionsPanel, "searching");
-    }
-
-    private void initialiseSortingOptionsPanel() {
         sortingOptionsPanel = new JPanel();
         sortingOptionsPanel.setLayout(new FlowLayout());
 
@@ -199,9 +168,8 @@ public class ControlPanel extends JPanel {
         sortingOptionsDropdown = new JComboBox<String>();
         sortingOptionsDropdown.setModel(new DefaultComboBoxModel<String>(SORTING_ALGORITHM_NAMES));
         sortingOptionsPanel.add(sortingOptionsDropdown);
-    }
+        algorithmOptionsPanel.add(sortingOptionsPanel, "Sorting");
 
-    private void initialiseSearchingOptionsPanel() {
         searchingOptionsPanel = new JPanel();
         searchingOptionsPanel.setLayout(new FlowLayout());
 
@@ -217,27 +185,39 @@ public class ControlPanel extends JPanel {
 
         searchingTargetOptionsSpinner = new JSpinner();
         searchingOptionsPanel.add(searchingTargetOptionsSpinner);
-    }
+        algorithmOptionsPanel.add(searchingOptionsPanel, "Searching");
 
-    private void initialiseArrayOptionsPanel() {
         arrayOptionsPanel = new JPanel();
         arrayOptionsPanel.setLayout(new FlowLayout());
 
         arrayOptionLabel = new JLabel("Array Length:");
         arrayOptionsPanel.add(arrayOptionLabel);
 
-        arrayLengthValue = new JLabel("10");
+        arrayLengthValue = new JLabel(String.valueOf(arrayLength));
         arrayOptionsPanel.add(arrayLengthValue);
 
         arrayLengthSlider = new JSlider();
         arrayLengthSlider.setModel(new DefaultBoundedRangeModel(2, 0, 0, ARRAY_LENGTHS.length - 1));
         arrayLengthSlider.setSnapToTicks(true);
         arrayLengthSlider.addChangeListener((e) -> {
-            updateArrayLength(ARRAY_LENGTHS[arrayLengthSlider.getValue()]);
-            arrayLengthValue.setText(String.valueOf(arrayLength));
+            changeArrayLength(ARRAY_LENGTHS[arrayLengthSlider.getValue()]);
         });
         arrayOptionsPanel.add(arrayLengthSlider);
+        optionsPanel.add(arrayOptionsPanel);
     }
 
+    private void switchAlgorithmOptions(ActionEvent e) {
+        JRadioButton source = (JRadioButton) e.getSource();
+        algorithmTypeSelection = source.getText();
+
+        CardLayout cl = (CardLayout) algorithmOptionsPanel.getLayout();
+        cl.show(algorithmOptionsPanel, algorithmTypeSelection);
+    }
+
+    private void changeArrayLength(int length) {
+        arrayLength = length;
+        arrayLengthValue.setText(String.valueOf(arrayLength));
+        renderCanvas.updateArray(arrayLength);
+    }
 
 }
