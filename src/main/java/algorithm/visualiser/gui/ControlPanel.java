@@ -64,9 +64,11 @@ public class ControlPanel extends JPanel {
     private JSlider arrayLengthSlider;
 
     private String algorithmTypeSelection;
-    private Algorithm algorithmSelection;
     private boolean algorithmRunning;
     private int arrayLength;
+
+    private SortingAlgorithm sortingAlgorithm;
+    private SearchingAlgorithm searchingAlgorithm;
 
     public ControlPanel(RenderCanvas renderCanvas) {
         this.renderCanvas = renderCanvas;
@@ -82,12 +84,16 @@ public class ControlPanel extends JPanel {
         return algorithmTypeSelection;
     }
 
-    public Algorithm getAlgorithmSelection() {
-        return algorithmSelection;
-    }
-
     public boolean isAlgorithmRunning() {
         return algorithmRunning;
+    }
+
+    public SortingAlgorithm getSortingAlgorithm() {
+        return sortingAlgorithm;
+    }
+
+    public SearchingAlgorithm getSearchingAlgorithm() {
+        return searchingAlgorithm;
     }
 
     private void initialise() {
@@ -123,20 +129,22 @@ public class ControlPanel extends JPanel {
         resetButton = new JButton("Reset");
         resetButton.addActionListener((e) -> {
             renderCanvas.getArray().reset();
+            resetSearchTargetFound();
         });
         buttonPanel.add(resetButton);
 
         runButton = new JButton("Run");
         runButton.addActionListener((e) -> {
+            resetSearchTargetFound();
+
             if (algorithmTypeSelection.equals("Sorting")) {
-                SortingAlgorithm sortingAlgorithm = SORTING_ALGORITHMS[sortingOptionsDropdown.getSelectedIndex()];
+                sortingAlgorithm = SORTING_ALGORITHMS[sortingOptionsDropdown.getSelectedIndex()];
                 sortingAlgorithm.setArray(renderCanvas.getArray());
                 sortingAlgorithm.setDelay(250);
 
                 runAlgorithm(sortingAlgorithm);
-
             } else if (algorithmTypeSelection.equals("Searching")) {
-                SearchingAlgorithm searchingAlgorithm = SEARCHING_ALGORITHMS[searchingOptionsDropdown.getSelectedIndex()];
+                searchingAlgorithm = SEARCHING_ALGORITHMS[searchingOptionsDropdown.getSelectedIndex()];
 
                 searchingAlgorithm.setArray(renderCanvas.getArray());
                 searchingAlgorithm.setDelay(250);
@@ -150,12 +158,14 @@ public class ControlPanel extends JPanel {
         shuffleButton = new JButton("Shuffle");
         shuffleButton.addActionListener((e) -> {
             renderCanvas.getArray().shuffle();
+            resetSearchTargetFound();
         });
         buttonPanel.add(shuffleButton);
 
         reverseButton = new JButton("Reverse");
         reverseButton.addActionListener((e) -> {
             renderCanvas.getArray().reverse();
+            resetSearchTargetFound();
         });
         buttonPanel.add(reverseButton);
 
@@ -216,11 +226,28 @@ public class ControlPanel extends JPanel {
     }
 
     private void runAlgorithm(Algorithm algorithm) {
-        algorithmSelection = algorithm;
-
+        enableComponents(false);
         algorithmRunning = true;
-        algorithmSelection.run();
+        algorithm.run();
         algorithmRunning = false;
+        enableComponents(true);
+    }
+
+    private void enableComponents(boolean enabled) {
+        sortingButton.setEnabled(enabled);
+        searchingButton.setEnabled(enabled);
+
+        sortingOptionsDropdown.setEnabled(enabled);
+
+        searchingOptionsDropdown.setEnabled(enabled);
+        searchingTargetOptionsSpinner.setEnabled(enabled);
+
+        arrayLengthSlider.setEnabled(enabled);
+
+        resetButton.setEnabled(enabled);
+        runButton.setEnabled(enabled);
+        shuffleButton.setEnabled(enabled);
+        reverseButton.setEnabled(enabled);
     }
 
     private SpinnerNumberModel getSpinnerNumberModel() {
@@ -234,6 +261,14 @@ public class ControlPanel extends JPanel {
 
         CardLayout cl = (CardLayout) algorithmOptionsPanel.getLayout();
         cl.show(algorithmOptionsPanel, algorithmTypeSelection);
+
+        resetSearchTargetFound();
+    }
+
+    private void resetSearchTargetFound() {
+        if (algorithmTypeSelection.equals("Searching") && searchingAlgorithm != null) {
+            searchingAlgorithm.resetTargetIndex();
+        }
     }
 
     private void changeArrayLength(int length) {
@@ -252,5 +287,7 @@ public class ControlPanel extends JPanel {
 
         return names;
     }
+
+    // TODO: disable shuffle and reverse options when using search algorithm
 
 }

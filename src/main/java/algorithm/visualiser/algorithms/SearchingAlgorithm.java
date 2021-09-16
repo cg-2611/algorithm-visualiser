@@ -18,7 +18,11 @@ public abstract class SearchingAlgorithm implements Algorithm {
         this.found = -1;
     }
 
-    public int foundIndex() {
+    public void resetTargetIndex() {
+        this.found = -1;
+    }
+
+    public int getTargetIndex() {
         return found;
     }
 

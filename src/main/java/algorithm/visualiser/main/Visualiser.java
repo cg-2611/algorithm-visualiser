@@ -3,7 +3,6 @@ package algorithm.visualiser.main;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
-import algorithm.visualiser.algorithms.SearchingAlgorithm;
 import algorithm.visualiser.gui.ControlPanel;
 import algorithm.visualiser.gui.RenderCanvas;
 import algorithm.visualiser.gui.Window;
@@ -72,7 +71,11 @@ public class Visualiser implements Runnable {
     }
 
     public void update() {
-        activeIndexes = controlPanel.getAlgorithmSelection().getActiveIndexes();
+        if (controlPanel.getAlgorithmTypeSelection().equals("Sorting")) {
+            activeIndexes = controlPanel.getSortingAlgorithm().getActiveIndexes();
+        } else if (controlPanel.getAlgorithmTypeSelection().equals("Searching")) {
+            activeIndexes = controlPanel.getSearchingAlgorithm().getActiveIndexes();
+        }
     }
 
     public void render() {
@@ -89,12 +92,9 @@ public class Visualiser implements Runnable {
             }
         }
 
-        if (controlPanel.getAlgorithmTypeSelection().equals("Searching")) {
-            if (controlPanel.getAlgorithmSelection() != null) {
-                SearchingAlgorithm searchingAlgorithm = (SearchingAlgorithm) controlPanel.getAlgorithmSelection();
-                if (searchingAlgorithm.foundIndex() != -1) {
-                    renderCanvas.renderTargetBar(g, searchingAlgorithm.foundIndex());
-                }
+        if (controlPanel.getAlgorithmTypeSelection().equals("Searching") && controlPanel.getSearchingAlgorithm() != null) {
+            if (controlPanel.getSearchingAlgorithm().getTargetIndex() != -1) {
+                renderCanvas.renderTargetBar(g, controlPanel.getSearchingAlgorithm().getTargetIndex());
             }
         }
 
