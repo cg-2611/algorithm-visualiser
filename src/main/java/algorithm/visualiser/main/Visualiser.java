@@ -3,6 +3,7 @@ package algorithm.visualiser.main;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
+import algorithm.visualiser.algorithms.SearchingAlgorithm;
 import algorithm.visualiser.gui.ControlPanel;
 import algorithm.visualiser.gui.RenderCanvas;
 import algorithm.visualiser.gui.Window;
@@ -85,6 +86,15 @@ public class Visualiser implements Runnable {
         if (controlPanel.isAlgorithmRunning()) {
             for (int i = 0; i < activeIndexes.length; i++) {
                 renderCanvas.renderActiveBar(g, activeIndexes[i]);
+            }
+        }
+
+        if (controlPanel.getAlgorithmTypeSelection().equals("Searching")) {
+            if (controlPanel.getAlgorithmSelection() != null) {
+                SearchingAlgorithm searchingAlgorithm = (SearchingAlgorithm) controlPanel.getAlgorithmSelection();
+                if (searchingAlgorithm.foundIndex() != -1) {
+                    renderCanvas.renderTargetBar(g, searchingAlgorithm.foundIndex());
+                }
             }
         }
 

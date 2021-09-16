@@ -2,27 +2,16 @@ package algorithm.visualiser.algorithms;
 
 import algorithm.visualiser.util.Array;
 
-public abstract class Algorithm {
+public interface Algorithm {
 
-    protected String name;
-    protected int delay;
+    public String getName();
 
-    protected Array array;
+    public void setArray(Array array);
 
-    public Algorithm(int delay) {
-        this.delay = delay;
-    }
+    public void setDelay(int delay);
 
-    public String getName() {
-        return name;
-    }
+    public int[] getActiveIndexes();
 
-    public void setArray(Array array) {
-        this.array = array;
-    }
-
-    public abstract int[] getActiveIndexes();
-
-    public abstract void run();
+    public void run();
 
 }

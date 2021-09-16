@@ -5,6 +5,7 @@ import java.awt.CardLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.util.Random;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -17,16 +18,18 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 
 import algorithm.visualiser.algorithms.Algorithm;
 import algorithm.visualiser.algorithms.BubbleSort;
 import algorithm.visualiser.algorithms.LinearSearch;
+import algorithm.visualiser.algorithms.SearchingAlgorithm;
+import algorithm.visualiser.algorithms.SortingAlgorithm;
 
 public class ControlPanel extends JPanel {
 
-    private static final Algorithm[] SORTING_ALGORITHMS = {new BubbleSort(250)};
-    private static final Algorithm[] SEARCHING_ALGORITHMS = {new LinearSearch(250)};
-    private static final String[] SORTING_ALGORITHM_NAMES = {"Bubble Sort"};
+    private static final SortingAlgorithm[] SORTING_ALGORITHMS = {new BubbleSort()};
+    private static final SearchingAlgorithm[] SEARCHING_ALGORITHMS = {new LinearSearch()};
     private static final int[] ARRAY_LENGTHS = {5, 10, 25, 50, 100, 250, 500};
 
     private RenderCanvas renderCanvas;
@@ -73,6 +76,10 @@ public class ControlPanel extends JPanel {
         arrayLength = 10;
 
         initialise();
+    }
+
+    public String getAlgorithmTypeSelection() {
+        return algorithmTypeSelection;
     }
 
     public Algorithm getAlgorithmSelection() {
@@ -122,19 +129,20 @@ public class ControlPanel extends JPanel {
         runButton = new JButton("Run");
         runButton.addActionListener((e) -> {
             if (algorithmTypeSelection.equals("Sorting")) {
-                algorithmSelection = SORTING_ALGORITHMS[sortingOptionsDropdown.getSelectedIndex()];
-                algorithmSelection.setArray(renderCanvas.getArray());
+                SortingAlgorithm sortingAlgorithm = SORTING_ALGORITHMS[sortingOptionsDropdown.getSelectedIndex()];
+                sortingAlgorithm.setArray(renderCanvas.getArray());
+                sortingAlgorithm.setDelay(250);
 
-                algorithmRunning = true;
-                algorithmSelection.run();
-                algorithmRunning = false;
+                runAlgorithm(sortingAlgorithm);
+
             } else if (algorithmTypeSelection.equals("Searching")) {
-                algorithmSelection = SEARCHING_ALGORITHMS[searchingOptionsDropdown.getSelectedIndex()];
-                algorithmSelection.setArray(renderCanvas.getArray());
+                SearchingAlgorithm searchingAlgorithm = SEARCHING_ALGORITHMS[searchingOptionsDropdown.getSelectedIndex()];
 
-                algorithmRunning = true;
-                algorithmSelection.run();
-                algorithmRunning = false;
+                searchingAlgorithm.setArray(renderCanvas.getArray());
+                searchingAlgorithm.setDelay(250);
+                searchingAlgorithm.setTarget((int)searchingTargetOptionsSpinner.getValue());
+
+                runAlgorithm(searchingAlgorithm);
             }
         });
         buttonPanel.add(runButton);
@@ -166,7 +174,7 @@ public class ControlPanel extends JPanel {
         sortingOptionsPanel.add(sortingOptionsLabel);
 
         sortingOptionsDropdown = new JComboBox<String>();
-        sortingOptionsDropdown.setModel(new DefaultComboBoxModel<String>(SORTING_ALGORITHM_NAMES));
+        sortingOptionsDropdown.setModel(new DefaultComboBoxModel<String>(getAlgorithmNames(SORTING_ALGORITHMS)));
         sortingOptionsPanel.add(sortingOptionsDropdown);
         algorithmOptionsPanel.add(sortingOptionsPanel, "Sorting");
 
@@ -177,13 +185,14 @@ public class ControlPanel extends JPanel {
         searchingOptionsPanel.add(searchingOptionsLabel);
 
         searchingOptionsDropdown = new JComboBox<String>();
-        searchingOptionsDropdown.setModel(new DefaultComboBoxModel<String>(new String[] {"Linear Search"}));
+        searchingOptionsDropdown.setModel(new DefaultComboBoxModel<String>(getAlgorithmNames(SEARCHING_ALGORITHMS)));
         searchingOptionsPanel.add(searchingOptionsDropdown);
 
         searchingTargetOptionLabel = new JLabel("Target:");
         searchingOptionsPanel.add(searchingTargetOptionLabel);
 
         searchingTargetOptionsSpinner = new JSpinner();
+        searchingTargetOptionsSpinner.setModel(getSpinnerNumberModel());
         searchingOptionsPanel.add(searchingTargetOptionsSpinner);
         algorithmOptionsPanel.add(searchingOptionsPanel, "Searching");
 
@@ -206,6 +215,19 @@ public class ControlPanel extends JPanel {
         optionsPanel.add(arrayOptionsPanel);
     }
 
+    private void runAlgorithm(Algorithm algorithm) {
+        algorithmSelection = algorithm;
+
+        algorithmRunning = true;
+        algorithmSelection.run();
+        algorithmRunning = false;
+    }
+
+    private SpinnerNumberModel getSpinnerNumberModel() {
+        int randomValue = new Random().nextInt(arrayLength - 1) + 1;
+        return new SpinnerNumberModel(randomValue, 1, arrayLength, 1);
+    }
+
     private void switchAlgorithmOptions(ActionEvent e) {
         JRadioButton source = (JRadioButton) e.getSource();
         algorithmTypeSelection = source.getText();
@@ -218,6 +240,17 @@ public class ControlPanel extends JPanel {
         arrayLength = length;
         arrayLengthValue.setText(String.valueOf(arrayLength));
         renderCanvas.updateArray(arrayLength);
+        searchingTargetOptionsSpinner.setModel(getSpinnerNumberModel());
+    }
+
+    private static String[] getAlgorithmNames(Algorithm[] algorithms) {
+        String[] names = new String[algorithms.length];
+
+        for (int i = 0; i < algorithms.length; i++) {
+            names[i] = algorithms[i].getName();
+        }
+
+        return names;
     }
 
 }

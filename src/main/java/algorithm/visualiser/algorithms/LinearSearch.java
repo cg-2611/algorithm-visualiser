@@ -1,28 +1,16 @@
 package algorithm.visualiser.algorithms;
 
-public class LinearSearch extends Algorithm {
-
-    private int target;
-    private int found;
+public class LinearSearch extends SearchingAlgorithm {
 
     private int i;
 
-    public LinearSearch(int delay) {
-        super(delay);
-        this.name = "Linear Search";
-
-        this.found = -1;
-
-        // temporary
-        target = 7;
+    public LinearSearch() {
+        super();
     }
 
-    public int getFound() {
-        return found;
-    }
-
-    public void setTarget(int target) {
-        this.target = target;
+    @Override
+    public String getName() {
+        return "Linear Search";
     }
 
     @Override
@@ -37,12 +25,12 @@ public class LinearSearch extends Algorithm {
                 found = i;
                 break;
             }
-        }
 
-        try {
-            Thread.sleep(delay);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            try {
+                Thread.sleep(delay);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 

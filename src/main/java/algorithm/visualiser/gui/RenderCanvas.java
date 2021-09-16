@@ -46,4 +46,9 @@ public class RenderCanvas extends Canvas {
         renderBar(g, index);
     }
 
+    public void renderTargetBar(Graphics g, int index) {
+        g.setColor(Color.GREEN);
+        renderBar(g, index);
+    }
+
 }

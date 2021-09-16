@@ -1,13 +1,17 @@
 package algorithm.visualiser.algorithms;
 
-public class BubbleSort extends Algorithm {
+public class BubbleSort extends SortingAlgorithm {
 
     private int i;
     private int j;
 
-    public BubbleSort(int delay) {
-        super(delay);
-        this.name = "Bubble Sort";
+    public BubbleSort() {
+        super();
+    }
+
+    @Override
+    public String getName() {
+        return "Bubble Sort";
     }
 
     @Override
