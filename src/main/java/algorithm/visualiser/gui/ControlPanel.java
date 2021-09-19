@@ -21,15 +21,23 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
 import algorithm.visualiser.algorithms.Algorithm;
-import algorithm.visualiser.algorithms.BubbleSort;
-import algorithm.visualiser.algorithms.LinearSearch;
 import algorithm.visualiser.algorithms.SearchingAlgorithm;
 import algorithm.visualiser.algorithms.SortingAlgorithm;
+import algorithm.visualiser.algorithms.searching.BinarySearch;
+import algorithm.visualiser.algorithms.searching.LinearSearch;
+import algorithm.visualiser.algorithms.sorting.BubbleSort;
+import algorithm.visualiser.algorithms.sorting.OptimisedBubbleSort;
 
 public class ControlPanel extends JPanel {
 
-    private static final SortingAlgorithm[] SORTING_ALGORITHMS = {new BubbleSort()};
-    private static final SearchingAlgorithm[] SEARCHING_ALGORITHMS = {new LinearSearch()};
+    private static final SortingAlgorithm[] SORTING_ALGORITHMS = {
+        new BubbleSort(), new OptimisedBubbleSort()
+    };
+
+    private static final SearchingAlgorithm[] SEARCHING_ALGORITHMS = {
+        new LinearSearch(), new BinarySearch()
+    };
+
     private static final int[] ARRAY_LENGTHS = {5, 10, 25, 50, 100, 250, 500};
 
     private RenderCanvas renderCanvas;
@@ -109,11 +117,13 @@ public class ControlPanel extends JPanel {
         sortingButton.setSelected(true);
         sortingButton.addActionListener((e) -> {
             switchAlgorithmOptions(e);
+            updatePanel();
         });
 
         searchingButton = new JRadioButton("Searching");
         searchingButton.addActionListener((e) -> {
             switchAlgorithmOptions(e);
+            updatePanel();
         });
 
         buttonGroup.add(sortingButton);
@@ -288,6 +298,14 @@ public class ControlPanel extends JPanel {
         return names;
     }
 
-    // TODO: disable shuffle and reverse options when using search algorithm
+    private void updatePanel() {
+        if (algorithmTypeSelection.equals("Sorting")) {
+            shuffleButton.setEnabled(true);
+            reverseButton.setEnabled(true);
+        } else if (algorithmTypeSelection.equals("Searching")) {
+            shuffleButton.setEnabled(false);
+            reverseButton.setEnabled(false);
+        }
+    }
 
 }

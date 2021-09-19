@@ -1,4 +1,6 @@
-package algorithm.visualiser.algorithms;
+package algorithm.visualiser.algorithms.sorting;
+
+import algorithm.visualiser.algorithms.SortingAlgorithm;
 
 public class BubbleSort extends SortingAlgorithm {
 
@@ -24,7 +26,7 @@ public class BubbleSort extends SortingAlgorithm {
         for (i = 0; i < array.size() - 1; i++) {
             for (j = 0; j < array.size()  - 1; j++) {
                 if (array.get(j) > array.get(j + 1)) {
-                    array.swap(j, j + 1, delay);
+                    array.swap(j, j + 1);
                 }
 
                 try {

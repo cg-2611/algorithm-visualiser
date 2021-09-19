@@ -1,4 +1,6 @@
-package algorithm.visualiser.algorithms;
+package algorithm.visualiser.algorithms.searching;
+
+import algorithm.visualiser.algorithms.SearchingAlgorithm;
 
 public class LinearSearch extends SearchingAlgorithm {
 

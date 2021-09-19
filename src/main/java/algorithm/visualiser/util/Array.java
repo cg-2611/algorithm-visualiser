@@ -47,7 +47,7 @@ public class Array {
         }
     }
 
-    public void swap(int index1, int index2, int delay) {
+    public void swap(int index1, int index2) {
         int temp = array[index1];
         array[index1] = array[index2];
         array[index2] = temp;
