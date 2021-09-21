@@ -10,7 +10,10 @@ public class BinarySearch extends SearchingAlgorithm {
 
     public BinarySearch() {
         super();
+        reset();
+    }
 
+    private void reset() {
         this.low = -1;
         this.high = -1;
     }
@@ -25,8 +28,7 @@ public class BinarySearch extends SearchingAlgorithm {
         return new int[] {low, high, mid};
     }
 
-    @Override
-    public void run() {
+    private void binarySearch() {
         if (low == -1) {
             low = 0;
         }
@@ -53,7 +55,7 @@ public class BinarySearch extends SearchingAlgorithm {
                 e.printStackTrace();
             }
 
-            run();
+            binarySearch();
         } else {
             low = mid + 1;
 
@@ -63,8 +65,14 @@ public class BinarySearch extends SearchingAlgorithm {
                 e.printStackTrace();
             }
 
-            run();
+            binarySearch();
         }
+    }
+
+    @Override
+    public void run() {
+        reset();
+        binarySearch();
     }
 
 }

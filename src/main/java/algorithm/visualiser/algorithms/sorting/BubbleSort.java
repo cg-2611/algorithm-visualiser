@@ -18,7 +18,7 @@ public class BubbleSort extends SortingAlgorithm {
 
     @Override
     public int[] getActiveIndexes() {
-        return  new int[] {i, j, j + 1};
+        return  new int[] {j, j + 1};
     }
 
     @Override

@@ -157,7 +157,7 @@ public class ControlPanel extends JPanel {
                 searchingAlgorithm = SEARCHING_ALGORITHMS[searchingOptionsDropdown.getSelectedIndex()];
 
                 searchingAlgorithm.setArray(renderCanvas.getArray());
-                searchingAlgorithm.setDelay(250);
+                searchingAlgorithm.setDelay(1000);
                 searchingAlgorithm.setTarget((int)searchingTargetOptionsSpinner.getValue());
 
                 runAlgorithm(searchingAlgorithm);

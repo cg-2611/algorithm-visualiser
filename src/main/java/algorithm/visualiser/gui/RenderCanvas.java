@@ -8,6 +8,8 @@ import algorithm.visualiser.util.Array;
 
 public class RenderCanvas extends Canvas {
 
+    private static final Color[] ACTIVE_COLOURS = {Color.RED, Color.BLUE, Color.MAGENTA};
+
     private Array array;
 
     public RenderCanvas() {
@@ -41,8 +43,8 @@ public class RenderCanvas extends Canvas {
         g.fillRect(x, y, barWidth, barHeight);
     }
 
-    public void renderActiveBar(Graphics g, int index) {
-        g.setColor(Color.RED);
+    public void renderActiveBar(Graphics g, int index, int colourIndex) {
+        g.setColor(ACTIVE_COLOURS[colourIndex]);
         renderBar(g, index);
     }
 
