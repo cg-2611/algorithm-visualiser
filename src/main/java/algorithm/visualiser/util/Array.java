@@ -53,4 +53,8 @@ public class Array {
         array[index2] = temp;
     }
 
+    public void set(int index, int value) {
+        array[index] = value;
+    }
+
 }
