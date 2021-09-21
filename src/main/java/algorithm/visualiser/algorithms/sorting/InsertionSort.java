@@ -22,7 +22,7 @@ public class InsertionSort extends SortingAlgorithm {
     }
 
     @Override
-    public void run() {
+    public void run() throws InterruptedException {
         for (i = 1; i < array.size(); i++) {
             int elementToInsert = array.get(i);
             previous = i - 1;
@@ -33,11 +33,7 @@ public class InsertionSort extends SortingAlgorithm {
             }
 
             if (previous >= 0) {
-                try {
-                    Thread.sleep(delay);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                Thread.sleep(delay);
             }
 
             array.set(previous + 1, elementToInsert);

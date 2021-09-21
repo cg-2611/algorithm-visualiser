@@ -23,7 +23,7 @@ public class InterpolationSearch extends SearchingAlgorithm {
     }
 
     @Override
-    public void run() {
+    public void run() throws InterruptedException {
         low = 0;
         high = array.size() - 1;
 
@@ -31,11 +31,7 @@ public class InterpolationSearch extends SearchingAlgorithm {
 
             mid = low + ((target - array.get(low)) * (high - low)) / (array.get(high) - array.get(low));
 
-            try {
-                Thread.sleep(delay);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            Thread.sleep(delay);
 
             if (target > array.get(mid)) {
                 low = mid + 1;

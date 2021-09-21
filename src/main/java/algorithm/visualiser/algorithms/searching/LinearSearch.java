@@ -21,18 +21,14 @@ public class LinearSearch extends SearchingAlgorithm {
     }
 
     @Override
-    public void run() {
+    public void run() throws InterruptedException {
         for (i = 0; i < array.size(); i++) {
             if (array.get(i) == target) {
                 found = i;
                 break;
             }
 
-            try {
-                Thread.sleep(delay);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            Thread.sleep(delay);
         }
     }
 

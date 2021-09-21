@@ -22,7 +22,7 @@ public class OptimisedBubbleSort extends SortingAlgorithm {
     }
 
     @Override
-    public void run() {
+    public void run() throws InterruptedException {
         boolean swapped = true;
         i = 0;
 
@@ -34,11 +34,7 @@ public class OptimisedBubbleSort extends SortingAlgorithm {
                     swapped = true;
                 }
 
-                try {
-                    Thread.sleep(delay);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                Thread.sleep(delay);
             }
             i++;
         }

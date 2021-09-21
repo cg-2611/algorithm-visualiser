@@ -28,7 +28,7 @@ public class BinarySearch extends SearchingAlgorithm {
         return new int[] {low, high, mid};
     }
 
-    private void binarySearch() {
+    private void binarySearch() throws InterruptedException {
         if (low == -1) {
             low = 0;
         }
@@ -49,28 +49,20 @@ public class BinarySearch extends SearchingAlgorithm {
         } else if (target < array.get(mid)) {
             high = mid - 1;
 
-            try {
-                Thread.sleep(delay);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            Thread.sleep(delay);
 
             binarySearch();
         } else {
             low = mid + 1;
 
-            try {
-                Thread.sleep(delay);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            Thread.sleep(delay);
 
             binarySearch();
         }
     }
 
     @Override
-    public void run() {
+    public void run() throws InterruptedException {
         reset();
         binarySearch();
     }

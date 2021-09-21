@@ -12,6 +12,6 @@ public interface Algorithm {
 
     public int[] getActiveIndexes();
 
-    public void run();
+    public void run() throws InterruptedException;
 
 }

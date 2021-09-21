@@ -22,18 +22,14 @@ public class BubbleSort extends SortingAlgorithm {
     }
 
     @Override
-    public void run() {
+    public void run() throws InterruptedException {
         for (i = 0; i < array.size() - 1; i++) {
             for (j = 0; j < array.size()  - 1; j++) {
                 if (array.get(j) > array.get(j + 1)) {
                     array.swap(j, j + 1);
                 }
 
-                try {
-                    Thread.sleep(delay);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                Thread.sleep(delay);
             }
         }
     }

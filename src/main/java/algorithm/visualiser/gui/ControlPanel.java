@@ -240,7 +240,13 @@ public class ControlPanel extends JPanel {
     private void runAlgorithm(Algorithm algorithm) {
         enableComponents(false);
         algorithmRunning = true;
-        algorithm.run();
+
+        try {
+            algorithm.run();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         algorithmRunning = false;
         enableComponents(true);
     }
