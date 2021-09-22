@@ -7,6 +7,10 @@ public class JumpSearch extends SearchingAlgorithm {
     private double low;
     private double high;
 
+    public JumpSearch() {
+        super();
+    }
+
     @Override
     public String getName() {
         return "Jump Search";
