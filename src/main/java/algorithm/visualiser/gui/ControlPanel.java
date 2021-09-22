@@ -25,19 +25,21 @@ import algorithm.visualiser.algorithms.SearchingAlgorithm;
 import algorithm.visualiser.algorithms.SortingAlgorithm;
 import algorithm.visualiser.algorithms.searching.BinarySearch;
 import algorithm.visualiser.algorithms.searching.InterpolationSearch;
+import algorithm.visualiser.algorithms.searching.JumpSearch;
 import algorithm.visualiser.algorithms.searching.LinearSearch;
 import algorithm.visualiser.algorithms.sorting.BubbleSort;
 import algorithm.visualiser.algorithms.sorting.InsertionSort;
 import algorithm.visualiser.algorithms.sorting.OptimisedBubbleSort;
+import algorithm.visualiser.algorithms.sorting.QuickSort;
 
 public class ControlPanel extends JPanel {
 
     private static final SortingAlgorithm[] SORTING_ALGORITHMS = {
-        new BubbleSort(), new OptimisedBubbleSort(), new InsertionSort()
+        new BubbleSort(), new OptimisedBubbleSort(), new InsertionSort(), new QuickSort()
     };
 
     private static final SearchingAlgorithm[] SEARCHING_ALGORITHMS = {
-        new LinearSearch(), new BinarySearch(), new InterpolationSearch()
+        new LinearSearch(), new BinarySearch(), new InterpolationSearch(), new JumpSearch()
     };
 
     private static final int[] ARRAY_LENGTHS = {5, 10, 25, 50, 100, 250, 500};
