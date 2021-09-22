@@ -31,11 +31,12 @@ import algorithm.visualiser.algorithms.sorting.BubbleSort;
 import algorithm.visualiser.algorithms.sorting.InsertionSort;
 import algorithm.visualiser.algorithms.sorting.OptimisedBubbleSort;
 import algorithm.visualiser.algorithms.sorting.QuickSort;
+import algorithm.visualiser.algorithms.sorting.SelectionSort;
 
 public class ControlPanel extends JPanel {
 
     private static final SortingAlgorithm[] SORTING_ALGORITHMS = {
-        new BubbleSort(), new OptimisedBubbleSort(), new InsertionSort(), new QuickSort()
+        new BubbleSort(), new OptimisedBubbleSort(), new InsertionSort(), new QuickSort(), new SelectionSort()
     };
 
     private static final SearchingAlgorithm[] SEARCHING_ALGORITHMS = {
