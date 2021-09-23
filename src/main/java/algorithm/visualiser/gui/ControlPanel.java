@@ -24,6 +24,7 @@ import algorithm.visualiser.algorithms.Algorithm;
 import algorithm.visualiser.algorithms.SearchingAlgorithm;
 import algorithm.visualiser.algorithms.SortingAlgorithm;
 import algorithm.visualiser.algorithms.searching.BinarySearch;
+import algorithm.visualiser.algorithms.searching.ExponentialSearch;
 import algorithm.visualiser.algorithms.searching.InterpolationSearch;
 import algorithm.visualiser.algorithms.searching.JumpSearch;
 import algorithm.visualiser.algorithms.searching.LinearSearch;
@@ -41,7 +42,7 @@ public class ControlPanel extends JPanel {
     };
 
     private static final SearchingAlgorithm[] SEARCHING_ALGORITHMS = {
-        new LinearSearch(), new BinarySearch(), new InterpolationSearch(), new JumpSearch()
+        new LinearSearch(), new BinarySearch(), new InterpolationSearch(), new JumpSearch(), new ExponentialSearch()
     };
 
     private static final int[] ARRAY_LENGTHS = {5, 10, 25, 50, 100, 250, 500};
