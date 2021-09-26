@@ -8,7 +8,7 @@ import algorithm.visualiser.util.Array;
 
 public class RenderCanvas extends Canvas {
 
-    private static final Color[] ACTIVE_COLOURS = {Color.RED, Color.BLUE, Color.MAGENTA, Color.YELLOW};
+    private static final Color[] ACTIVE_COLOURS = {Color.RED, Color.BLUE, Color.MAGENTA};
 
     private Array array;
 
