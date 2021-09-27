@@ -4,58 +4,83 @@ import algorithm.visualiser.algorithms.SortingAlgorithm;
 
 public class MergeSort extends SortingAlgorithm {
 
-    private int i = 0;
-    private int j = 0;
-    private int k = 0;
+    private int iArray;
+    private int jArray;
 
     public MergeSort() {
         super();
     }
 
-    private void merge(int[] array, int[] left, int[] right, int leftIndex, int rightIndex) throws InterruptedException {
-        i = 0;
-        j = 0;
-        k = 0;
+    private int[] getSubArray(int start, int length) {
+        int[] array = new int[length];
 
-        while (i < leftIndex && j < rightIndex) {
-            if (left[i] <= right[j]) {
-                array[k++] = left[i++];
+        for (int i = 0; i < length; i++) {
+            array[i] = this.array.get(start + i);
+        }
+
+        return array;
+    }
+
+    private void merge(int left, int mid, int right) throws InterruptedException {
+        int leftLength = mid - left + 1;
+        int rightLength = right - mid;
+
+        int leftArray[] = getSubArray(left, leftLength);
+        int rightArray[] = getSubArray(mid + 1, rightLength);
+
+        int i = 0;
+        int j = 0;
+        int k = left;
+
+        while (i < leftLength && j < rightLength) {
+            if (leftArray[i] <= rightArray[j]) {
+                array.set(k, leftArray[i]);
+                i++;
+
+                iArray = i + left;
+                jArray = j + right;
+                Thread.sleep(delay);
             } else {
-                array[k++] = right[j++];
+                array.set(k, rightArray[j]);
+                j++;
+
+                iArray = i + left;
+                jArray = j + right;
+                Thread.sleep(delay);
             }
+            k++;
         }
 
-        while (i < leftIndex) {
-            array[k++] = left[i++];
+        while (i < leftLength) {
+            array.set(k, leftArray[i]);
+            i++;
+            k++;
+
+            iArray = i + left;
+            jArray = j + right;
+            Thread.sleep(delay);
         }
 
-        while (j < rightIndex) {
-            array[k++] = right[j++];
+        while (j < rightLength) {
+            array.set(k, rightArray[j]);
+            j++;
+            k++;
+
+            iArray = i + left;
+            jArray = j + right;
+            Thread.sleep(delay);
         }
     }
 
-    private void mergeSort(int[] array, int length) throws InterruptedException {
-        if (length < 2) {
-            return;
+    private void mergeSort(int left, int right) throws InterruptedException {
+        if (left < right) {
+            int mid = (left + right) / 2;
+
+            mergeSort(left, mid);
+            mergeSort(mid + 1, right);
+            merge(left, mid, right);
         }
-
-        int mid = length / 2;
-        int[] left = new int[mid];
-        int[] right = new int[length - mid];
-
-        for (int i = 0; i < mid; i++) {
-            left[i] = array[i];
-        }
-        for (int i = mid; i < length; i++) {
-            right[i - mid] = array[i];
-        }
-
-        mergeSort(left, mid);
-        mergeSort(right, length - mid);
-
-        merge(array, left, right, mid, length - mid);
     }
-
 
     @Override
     public String getName() {
@@ -64,12 +89,12 @@ public class MergeSort extends SortingAlgorithm {
 
     @Override
     public int[] getActiveIndexes() {
-        return new int[] {i, j, k};
+        return new int[] {iArray, jArray};
     }
 
     @Override
     public void run() throws InterruptedException {
-        mergeSort(array.getArray(), array.size());
+        mergeSort(0, array.size() - 1);
     }
 
 }
