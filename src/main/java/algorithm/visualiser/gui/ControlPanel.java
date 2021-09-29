@@ -233,7 +233,7 @@ public class ControlPanel extends JPanel {
         arrayOptionsPanel.add(arrayLengthValue);
 
         arrayLengthSlider = new JSlider();
-        arrayLengthSlider.setModel(new DefaultBoundedRangeModel(2, 0, 0, ARRAY_LENGTHS.length - 1));
+        arrayLengthSlider.setModel(new DefaultBoundedRangeModel(1, 0, 0, ARRAY_LENGTHS.length - 1));
         arrayLengthSlider.setPaintTicks(true);
         arrayLengthSlider.setSnapToTicks(true);
         arrayLengthSlider.addChangeListener((e) -> {
