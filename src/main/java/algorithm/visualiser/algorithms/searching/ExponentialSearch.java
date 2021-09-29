@@ -55,6 +55,8 @@ public class ExponentialSearch extends SearchingAlgorithm {
 
     @Override
     public void run() throws InterruptedException {
+        setDelay(1000);
+
         if (array.size() == 0) {
             found = -1;
             return;

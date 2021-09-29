@@ -23,6 +23,8 @@ public class OptimisedBubbleSort extends SortingAlgorithm {
 
     @Override
     public void run() throws InterruptedException {
+        setDelay(2500 / array.size());
+
         boolean swapped = true;
         i = 0;
 

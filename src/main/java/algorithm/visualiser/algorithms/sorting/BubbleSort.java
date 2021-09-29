@@ -23,6 +23,8 @@ public class BubbleSort extends SortingAlgorithm {
 
     @Override
     public void run() throws InterruptedException {
+        setDelay(2500 / array.size());
+
         for (i = 0; i < array.size() - 1; i++) {
             for (j = 0; j < array.size()  - 1; j++) {
                 if (array.get(j) > array.get(j + 1)) {

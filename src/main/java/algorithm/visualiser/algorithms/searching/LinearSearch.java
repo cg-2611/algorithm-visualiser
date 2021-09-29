@@ -22,6 +22,8 @@ public class LinearSearch extends SearchingAlgorithm {
 
     @Override
     public void run() throws InterruptedException {
+        setDelay(2500 / array.size());
+
         for (i = 0; i < array.size(); i++) {
             if (array.get(i) == target) {
                 found = i;

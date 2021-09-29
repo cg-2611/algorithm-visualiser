@@ -24,6 +24,8 @@ public class InterpolationSearch extends SearchingAlgorithm {
 
     @Override
     public void run() throws InterruptedException {
+        setDelay(2500);
+
         low = 0;
         high = array.size() - 1;
 

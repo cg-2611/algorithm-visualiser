@@ -156,15 +156,9 @@ public class ControlPanel extends JPanel {
 
             if (algorithmTypeSelection.equals("Sorting")) {
                 sortingAlgorithm = SORTING_ALGORITHMS[sortingOptionsDropdown.getSelectedIndex()];
-                sortingAlgorithm.setArray(renderCanvas.getArray());
-                sortingAlgorithm.setDelay(250);
-
                 runAlgorithm(sortingAlgorithm);
             } else if (algorithmTypeSelection.equals("Searching")) {
                 searchingAlgorithm = SEARCHING_ALGORITHMS[searchingOptionsDropdown.getSelectedIndex()];
-
-                searchingAlgorithm.setArray(renderCanvas.getArray());
-                searchingAlgorithm.setDelay(1000);
                 searchingAlgorithm.setTarget((int)searchingTargetOptionsSpinner.getValue());
 
                 runAlgorithm(searchingAlgorithm);
@@ -244,6 +238,8 @@ public class ControlPanel extends JPanel {
     }
 
     private void runAlgorithm(Algorithm algorithm) {
+        algorithm.setArray(renderCanvas.getArray());
+
         enableComponents(false);
         algorithmRunning = true;
 

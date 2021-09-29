@@ -90,6 +90,7 @@ public class MergeSort extends SortingAlgorithm {
 
     @Override
     public void run() throws InterruptedException {
+        setDelay(5000 / array.size());
         mergeSort(0, array.size() - 1);
     }
 

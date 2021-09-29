@@ -53,6 +53,7 @@ public class QuickSort extends SortingAlgorithm {
 
     @Override
     public void run() throws InterruptedException {
+        setDelay(2500 / array.size());
         quickSort(0, array.size() - 1);
     }
 

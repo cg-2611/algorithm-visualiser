@@ -23,6 +23,8 @@ public class SelectionSort extends SortingAlgorithm {
 
     @Override
     public void run() throws InterruptedException {
+        setDelay(2500 / array.size());
+
         for (i = 0; i < array.size() - 1; i++) {
             int smallestIndex = i;
             for (j = i + 1; j < array.size(); j++) {

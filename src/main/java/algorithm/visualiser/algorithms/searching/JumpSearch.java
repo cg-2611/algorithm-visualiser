@@ -23,6 +23,8 @@ public class JumpSearch extends SearchingAlgorithm {
 
     @Override
     public void run() throws InterruptedException {
+        setDelay(25000 / array.size());
+
         double jump = Math.sqrt(array.size());
 
         low = 0;

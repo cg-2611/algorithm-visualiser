@@ -63,6 +63,7 @@ public class BinarySearch extends SearchingAlgorithm {
 
     @Override
     public void run() throws InterruptedException {
+        // setDelay(1000);
         reset();
         binarySearch();
     }

@@ -23,6 +23,8 @@ public class InsertionSort extends SortingAlgorithm {
 
     @Override
     public void run() throws InterruptedException {
+        setDelay((int) 6250 / array.size());
+
         for (i = 1; i < array.size(); i++) {
             int elementToInsert = array.get(i);
             previous = i - 1;
