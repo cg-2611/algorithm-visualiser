@@ -12,13 +12,13 @@ public class MergeSort extends SortingAlgorithm {
     }
 
     private int[] getSubArray(int start, int length) {
-        int[] array = new int[length];
+        int[] subArray = new int[length];
 
         for (int i = 0; i < length; i++) {
-            array[i] = this.array.get(start + i);
+            subArray[i] = array.get(start + i);
         }
 
-        return array;
+        return subArray;
     }
 
     private void merge(int left, int mid, int right) throws InterruptedException {
@@ -38,14 +38,12 @@ public class MergeSort extends SortingAlgorithm {
                 i++;
 
                 iArray = i + left;
-                jArray = j + right;
                 Thread.sleep(delay);
             } else {
                 array.set(k, rightArray[j]);
                 j++;
 
-                iArray = i + left;
-                jArray = j + right;
+                jArray = j + mid;
                 Thread.sleep(delay);
             }
             k++;
@@ -57,7 +55,6 @@ public class MergeSort extends SortingAlgorithm {
             k++;
 
             iArray = i + left;
-            jArray = j + right;
             Thread.sleep(delay);
         }
 
@@ -66,8 +63,7 @@ public class MergeSort extends SortingAlgorithm {
             j++;
             k++;
 
-            iArray = i + left;
-            jArray = j + right;
+            jArray = j + mid;
             Thread.sleep(delay);
         }
     }
