@@ -10,6 +10,11 @@ public class InterpolationSearch extends SearchingAlgorithm {
 
     public InterpolationSearch() {
         super();
+        reset();
+    }
+
+    private void reset() {
+        this.mid = -1;
     }
 
     @Override
@@ -19,11 +24,12 @@ public class InterpolationSearch extends SearchingAlgorithm {
 
     @Override
     public int[] getActiveIndexes() {
-        return new int[] {low, high, mid};
+        return mid != -1 ? new int[] {low, high, mid} : new int[] {low, high};
     }
 
     @Override
     public void run() throws InterruptedException {
+        reset();
         setDelay(2500);
 
         low = 0;
