@@ -23,14 +23,16 @@ public class JumpSearch extends SearchingAlgorithm {
 
     @Override
     public void run() throws InterruptedException {
-        setDelay(25000 / array.size());
+        setDelay(500);
 
         double jump = Math.sqrt(array.size());
 
         low = 0;
         high = jump;
 
-        while (array.get((int) Math.min(high, array.size()) - 1) < target) {
+        while (array.get((int)high) < target) {
+            Thread.sleep(delay);
+
             low = high;
             high += jump;
 
@@ -39,7 +41,7 @@ public class JumpSearch extends SearchingAlgorithm {
                 return;
             }
 
-            Thread.sleep(delay);
+            high = Math.min(high, array.size() - 1);
         }
 
         while (array.get((int)low) < target) {
