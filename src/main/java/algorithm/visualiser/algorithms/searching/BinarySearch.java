@@ -39,6 +39,8 @@ public class BinarySearch extends SearchingAlgorithm {
 
         mid = low  + ((high - low) / 2);
 
+        Thread.sleep(delay);
+
         if (high < low) {
             found = -1;
             return;
@@ -48,23 +50,17 @@ public class BinarySearch extends SearchingAlgorithm {
             found = mid;
         } else if (target < array.get(mid)) {
             high = mid - 1;
-
-            Thread.sleep(delay);
-
             binarySearch();
         } else {
             low = mid + 1;
-
-            Thread.sleep(delay);
-
             binarySearch();
         }
     }
 
     @Override
     public void run() throws InterruptedException {
-        // setDelay(1000);
         reset();
+        setDelay(1000);
         binarySearch();
     }
 
