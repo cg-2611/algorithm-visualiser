@@ -5,7 +5,6 @@ import algorithm.visualiser.algorithms.SortingAlgorithm;
 public class BubbleSort extends SortingAlgorithm {
 
     private int i;
-    private int j;
 
     public BubbleSort() {
         super();
@@ -18,17 +17,20 @@ public class BubbleSort extends SortingAlgorithm {
 
     @Override
     public int[] getActiveIndexes() {
-        return  new int[] {j, j + 1};
+        return  new int[] {i, i + 1};
     }
 
     @Override
     public void run() throws InterruptedException {
         setDelay(2500 / array.size());
 
-        for (i = 0; i < array.size() - 1; i++) {
-            for (j = 0; j < array.size()  - 1; j++) {
-                if (array.get(j) > array.get(j + 1)) {
-                    array.swap(j, j + 1);
+        boolean swapped = true;
+        while (swapped) {
+            swapped = false;
+            for (i = 0; i < array.size()  - 1; i++) {
+                if (array.get(i) > array.get(i + 1)) {
+                    array.swap(i, i + 1);
+                    swapped = true;
                 }
 
                 Thread.sleep(delay);
