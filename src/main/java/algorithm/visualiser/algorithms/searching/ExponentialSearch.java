@@ -10,7 +10,10 @@ public class ExponentialSearch extends SearchingAlgorithm {
 
     public ExponentialSearch() {
         super();
+        reset();
+    }
 
+    private void reset() {
         this.mid = -1;
     }
 
@@ -21,15 +24,13 @@ public class ExponentialSearch extends SearchingAlgorithm {
 
     @Override
     public int[] getActiveIndexes() {
-        if (mid != -1) {
-            return new int[] {low, high, mid};
-        } else {
-            return new int[] {low, high};
-        }
+        return mid != -1 ? new int[] {low, high, mid} : new int[] {low, high};
     }
 
     private void binarySearch() throws InterruptedException {
         mid = low  + ((high - low) / 2);
+
+        Thread.sleep(delay);
 
         if (high < low) {
             found = -1;
@@ -40,49 +41,35 @@ public class ExponentialSearch extends SearchingAlgorithm {
             found = mid;
         } else if (target < array.get(mid)) {
             high = mid - 1;
-
-            Thread.sleep(delay);
-
             binarySearch();
         } else {
             low = mid + 1;
-
-            Thread.sleep(delay);
-
             binarySearch();
         }
     }
 
     @Override
     public void run() throws InterruptedException {
-        setDelay(1000);
+        reset();
+        setDelay(500);
 
         if (array.size() == 0) {
             found = -1;
             return;
         }
 
+        low = 0;
         high = 1;
 
-        while (true) {
-            if (high > array.size()) {
-                break;
-            }
-
-            if (array.get(high) > target) {
-                break;
-            }
-
+        while (high < array.size() && array.get(high) < target) {
+            Thread.sleep(delay);
             high *= 2;
-
-            if (high < array.size()) {
-                Thread.sleep(delay);
-            }
         }
 
         low = high / 2;
-        high = Math.min(high + 1, array.size());
+        high = Math.min(high, array.size() - 1);
 
+        setDelay(1000);
         binarySearch();
     }
 
