@@ -28,7 +28,7 @@ public class OptimisedBubbleSort extends SortingAlgorithm {
         boolean swapped = true;
         i = 0;
 
-        while ((swapped == true) && (i < array.size())) {
+        while (swapped && i < array.size()) {
             swapped = false;
             for (j = 0; j < array.size() - i - 1; j++) {
                 if (array.get(j) > array.get(j + 1)) {
