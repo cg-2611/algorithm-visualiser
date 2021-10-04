@@ -11,33 +11,31 @@ public class QuickSort extends SortingAlgorithm {
         super();
     }
 
-    private int partition(int start, int end) throws InterruptedException {
-        pivot = array.get(end);
-        index = start - 1;
+    private int partition(int low, int high) throws InterruptedException {
+        pivot = array.get(high);
+        index = low - 1;
 
-        for (int j = start; j < end; j++) {
+        for (int j = low; j <= high - 1; j++) {
             if (array.get(j) <= pivot) {
                 index++;
-
                 array.swap(index, j);
             }
 
-            if (pivot > 0 && index > 0) {
+            if ((index >= 0 && index < array.size()) && (pivot >= 0 && pivot < array.size())) {
                 Thread.sleep(delay);
             }
         }
 
-        array.swap(index + 1, end);
-
+        array.swap(index + 1, high);
         return index + 1;
     }
 
-    private void quickSort(int start, int end) throws InterruptedException {
-        if (start < end) {
-            int partitionIndex = partition(start, end);
+    private void quickSort(int low, int high) throws InterruptedException {
+        if (low < high) {
+            int partitionIndex = partition(low, high);
 
-            quickSort(start, partitionIndex - 1);
-            quickSort(partitionIndex + 1, end);
+            quickSort(low, partitionIndex - 1);
+            quickSort(partitionIndex + 1, high);
         }
     }
 
