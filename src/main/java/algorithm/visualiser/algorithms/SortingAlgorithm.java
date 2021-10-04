@@ -8,6 +8,9 @@ public abstract class SortingAlgorithm implements Algorithm {
 
     protected int delay;
 
+    /**
+     * Creates a default sorting algorithm with a time delay of 250 ms.
+     */
     public SortingAlgorithm() {
         this.delay = 250;
     }

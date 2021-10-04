@@ -11,6 +11,9 @@ public abstract class SearchingAlgorithm implements Algorithm {
     protected int target;
     protected int found;
 
+    /**
+     * Creates a default searching algorithm with a time delay of 250 ms and a target element of 1.
+     */
     public SearchingAlgorithm() {
         this.delay = 250;
 
@@ -18,11 +21,18 @@ public abstract class SearchingAlgorithm implements Algorithm {
         this.found = -1;
     }
 
-    public void resetTargetIndex() {
+    /**
+     * Resets the index of the found element.
+     */
+    public void resetFoundIndex() {
         this.found = -1;
     }
 
-    public int getTargetIndex() {
+    /**
+     *
+     * @return the index of the target if it is found.
+     */
+    public int getFoundIndex() {
         return found;
     }
 
@@ -36,6 +46,10 @@ public abstract class SearchingAlgorithm implements Algorithm {
         this.delay = delay;
     }
 
+    /**
+     * Sets the target index of the algorithm.
+     * @param target the value of the element to be found
+     */
     public void setTarget(int target) {
         this.target = target;
     }

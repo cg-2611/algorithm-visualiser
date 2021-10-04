@@ -85,6 +85,10 @@ public class ControlPanel extends JPanel {
     private SortingAlgorithm sortingAlgorithm;
     private SearchingAlgorithm searchingAlgorithm;
 
+    /**
+     * Creates a new ControlPanel.
+     * @param renderCanvas the renderCanvas with the array that is to be manipulated by this object
+     */
     public ControlPanel(RenderCanvas renderCanvas) {
         this.renderCanvas = renderCanvas;
 
@@ -95,23 +99,41 @@ public class ControlPanel extends JPanel {
         initialise();
     }
 
+    /**
+     *
+     * @return the algorithm type selected by the user
+     */
     public String getAlgorithmTypeSelection() {
         return algorithmTypeSelection;
     }
 
+    /**
+     *
+     * @return if an algorithm is currently running
+     */
     public boolean isAlgorithmRunning() {
         return algorithmRunning;
     }
 
+    /**
+     *
+     * @return the sorting algorithm selected
+     */
     public SortingAlgorithm getSortingAlgorithm() {
         return sortingAlgorithm;
     }
 
+    /**
+     *
+     * @return the searching algorithm selected
+     */
     public SearchingAlgorithm getSearchingAlgorithm() {
         return searchingAlgorithm;
     }
 
     private void initialise() {
+        // create and add components to the JPanel
+
         setLayout(new BorderLayout());
 
         selectionPanel = new JPanel();
@@ -238,6 +260,7 @@ public class ControlPanel extends JPanel {
     }
 
     private void runAlgorithm(Algorithm algorithm) {
+        // run the algorithm that has been passed to the method
         algorithm.setArray(renderCanvas.getArray());
 
         enableComponents(false);
@@ -251,9 +274,12 @@ public class ControlPanel extends JPanel {
 
         algorithmRunning = false;
         enableComponents(true);
+
+        updatePanel();
     }
 
     private void enableComponents(boolean enabled) {
+        // sets the enabled status of some components to the value passed
         sortingButton.setEnabled(enabled);
         searchingButton.setEnabled(enabled);
 
@@ -271,11 +297,13 @@ public class ControlPanel extends JPanel {
     }
 
     private SpinnerNumberModel getSpinnerNumberModel() {
+        // return a new spinner that has the correct bounds and also an initial random value
         int randomValue = new Random().nextInt(arrayLength - 1) + 1;
         return new SpinnerNumberModel(randomValue, 1, arrayLength, 1);
     }
 
     private void switchAlgorithmOptions(ActionEvent e) {
+        // switches the card panel to show the different algorithms when each type is selected
         JRadioButton source = (JRadioButton) e.getSource();
         algorithmTypeSelection = source.getText();
 
@@ -286,12 +314,14 @@ public class ControlPanel extends JPanel {
     }
 
     private void resetSearchTargetFound() {
+        // reset the whether a target has been found when searching
         if (algorithmTypeSelection.equals("Searching") && searchingAlgorithm != null) {
-            searchingAlgorithm.resetTargetIndex();
+            searchingAlgorithm.resetFoundIndex();
         }
     }
 
     private void changeArrayLength(int length) {
+        // change the length of the array based on the slider value
         arrayLength = length;
         arrayLengthValue.setText(String.valueOf(arrayLength));
         renderCanvas.updateArray(arrayLength);
@@ -299,6 +329,7 @@ public class ControlPanel extends JPanel {
     }
 
     private static String[] getAlgorithmNames(Algorithm[] algorithms) {
+        // get the names of the algorithms from the array of algorithms
         String[] names = new String[algorithms.length];
 
         for (int i = 0; i < algorithms.length; i++) {
@@ -309,6 +340,7 @@ public class ControlPanel extends JPanel {
     }
 
     private void updatePanel() {
+        // disable and enable appropriate buttons based on the algorithm type selection
         if (algorithmTypeSelection.equals("Sorting")) {
             shuffleButton.setEnabled(true);
             reverseButton.setEnabled(true);
