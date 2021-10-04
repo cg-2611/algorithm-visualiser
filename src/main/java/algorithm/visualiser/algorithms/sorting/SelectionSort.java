@@ -18,7 +18,7 @@ public class SelectionSort extends SortingAlgorithm {
 
     @Override
     public int[] getActiveIndexes() {
-        return new int[] {i, j,};
+        return new int[] {i, j};
     }
 
     @Override
