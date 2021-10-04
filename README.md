@@ -1,6 +1,6 @@
 # Algorithm Visualiser
 
-This is a program that can be used to visualise searching and sorting algorithms. It was written using Java and java swing.
+This is a program that can be used to visualise searching and sorting algorithms. It was written using java and java swing.
 
 The algorithm supported -
 - Sorting:
